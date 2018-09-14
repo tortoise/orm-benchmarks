@@ -1,0 +1,7 @@
+django
+sqlalchemy
+peewee
+pony
+sqlobject
+tortoise-orm
+
