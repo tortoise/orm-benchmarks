@@ -44,12 +44,12 @@ ORMs:
 
 Django:
         https://www.djangoproject.com/
-SQLAlchemy ORM:
-        http://www.sqlalchemy.org/
 peewee:
         https://github.com/coleifer/peewee
 Pony ORM:
         https://github.com/ponyorm/pony
+SQLAlchemy ORM:
+        http://www.sqlalchemy.org/
 SQLObject:
         https://github.com/sqlobject/sqlobject
 Tortoise ORM:
@@ -59,7 +59,7 @@ Results
 =======
 
 ==================== ============ ============ ============
--                     Django       peewee       pony
+\                     Django       peewee       pony
 ==================== ============ ============ ============
 Insert                   1172.37      1275.20      1337.22
 Insert: atomic           8832.62      7176.03     25803.69
