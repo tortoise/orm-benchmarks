@@ -1,6 +1,11 @@
 #!/bin/sh
 
-export ITERATIONS=10000
+export ITERATIONS=100
+if [ "x$1" == "xfull" ]; then
+    export ITERATIONS=100000
+fi
+
+echo Iterations: $ITERATIONS
 
 printf '' > outfile
 

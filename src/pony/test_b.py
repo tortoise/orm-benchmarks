@@ -16,5 +16,5 @@ with db_session():
     commit()
 now = time.time()
 
-print(f'pony, B: Rows/sec: {count / (now - start): 10.2f}')
+print(f'Pony, B: Rows/sec: {count / (now - start): 10.2f}')
 

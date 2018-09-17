@@ -16,5 +16,5 @@ for i in range(count):
         commit()
 now = time.time()
 
-print(f'pony, A: Rows/sec: {count / (now - start): 10.2f}')
+print(f'Pony, A: Rows/sec: {count / (now - start): 10.2f}')
 
