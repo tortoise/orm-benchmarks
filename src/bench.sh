@@ -5,6 +5,8 @@ if [ "x$1" == "xfull" ]; then
     export ITERATIONS=100000
 fi
 
+cd $(dirname $0)
+
 echo Iterations: $ITERATIONS
 
 printf '' > outfile
@@ -12,9 +14,9 @@ printf '' > outfile
 django/bench.sh | tee -a outfile
 peewee/bench.sh | tee -a outfile
 pony/bench.sh | tee -a outfile
-#sqlalchemy/bench.sh
-#sqlobject/bench.sh
-#tortoise/bench.sh
+sqlalchemy/bench.sh | tee -a outfile
+sqlobject/bench.sh | tee -a outfile
+tortoise/bench.sh | tee -a outfile
 
 cat outfile | ./present.py
 

@@ -27,7 +27,7 @@ for bench in vals:
 
 tests = sorted(list(tests))
 groups = sorted(data.keys(), key=lambda s: s.lower())
-titles = [f"\{'':19}"] + [f" {group:11}" for group in groups]
+titles = [f"\{'':19}"] + [f"{group:14}" for group in groups]
 
 print('')
 print(' '.join(['=' * len(text) for text in titles]))
@@ -37,7 +37,7 @@ print(' '.join(['=' * len(text) for text in titles]))
 for test in tests:
     results = [f'{DESC[test]:20}']
     for group in groups:
-        results.append(f"{data[group].get(test, '—'):>11} ")
+        results.append(f"{data[group].get(test, '—'):>14}")
     print(' '.join(results).rstrip())
 
 print(' '.join(['=' * len(text) for text in titles]))

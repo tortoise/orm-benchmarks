@@ -14,4 +14,5 @@ with db_session():
 
 now = time.time()
 
-print(f'Pony, E: Rows/sec: {count / (now - start): 10.2f}')
+print(f'Pony ORM, E: Rows/sec: {count / (now - start): 10.2f}')
+

@@ -3,28 +3,29 @@
 cd $(dirname $0)
 
 # setup DB
-#rm -f db.sqlite3
+rm -f db.sqlite3
+python -m set_up
 
 # Test A → Insert
-#python -m simple.test_a
+python -m test_a
 
 # Test B → Transactioned Intsert
-#python -m simple.test_b
+python -m test_b
 
 # Test C → Bulk Insert
-#python -m simple.test_c
+python -m test_c
 
 # Test D → Filter on level
-#python -m simple.test_d
+python -m test_d
 
 # Test E → Search in text
-#python -m simple.test_e
+python -m test_e
 
 # Test F → Aggregation
-#python -m simple.test_f
+#python -m test_f
 
 # Test G → Cursor efficiency
-#python -m simple.test_g
+#python -m test_g
 
 # teardown DB
 #rm -f db.sqlite3
