@@ -11,10 +11,10 @@ echo Iterations: $ITERATIONS
 
 printf '' > outfile
 
-#django/bench.sh | tee -a outfile
-#peewee/bench.sh | tee -a outfile
-#pony/bench.sh | tee -a outfile
-#sqlalchemy/bench.sh | tee -a outfile
+django/bench.sh | tee -a outfile
+peewee/bench.sh | tee -a outfile
+pony/bench.sh | tee -a outfile
+sqlalchemy/bench.sh | tee -a outfile
 sqlobject/bench.sh | tee -a outfile
 tortoise/bench.sh | tee -a outfile
 
