@@ -67,3 +67,41 @@ Insert: bulk               34120.59       11528.16              —       38764.
 Filter: match              68934.47       39307.05      223419.30       75863.22        8140.76              —
 Filter: contains           68340.79       39641.32      226013.34       77658.41        5498.24              —
 ==================== ============== ============== ============== ============== ============== ==============
+
+Perf issues identified
+======================
+* ``aiosqlite`` will always issue an event loop cycle, whereas changing the blocking call to block the first time only yields significant speed ups (~8-16X):
+
+  ==================== ==============
+  \                    Tortoise ORM
+  ==================== ==============
+  Insert                       874.59
+  Insert: atomic              2280.34
+  ==================== ==============
+
+
+  .. code:: py3
+
+    async def _execute(self, fn, *args, **kwargs):
+        """Queue a function with the given arguments for execution."""
+        await self._lock.acquire()
+        pt = partial(fn, *args, **kwargs)
+        self._tx.put_nowait(pt)
+        try:
+            # Many commands return nearly immediately (e.g. in a transaction)
+            result = self._rx.get(timeout=0.001)
+        except Empty:
+            while True:
+                try:
+                    result = self._rx.get_nowait()
+                    break
+
+                except Empty:
+                    await asyncio.sleep(0.001)
+                    continue
+
+        self._lock.release()
+        if isinstance(result, Exception):
+            raise result
+
+        return result
