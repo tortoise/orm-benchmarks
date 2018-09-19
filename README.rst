@@ -14,6 +14,9 @@ ORM Benchmarks
 Benchmarks:
 ===========
 
+These benchmarks are not meant to be used as a direct comparison.
+They suffer from co-operative back-off, and is a lot simpler than common real-world scenarios.
+
 1) Single table
 ---------------
 
@@ -44,16 +47,29 @@ ORMs:
 
 Django:
         https://www.djangoproject.com/
+
 peewee:
         https://github.com/coleifer/peewee
+
 Pony ORM:
         https://github.com/ponyorm/pony
+
+        * Does not support bulk insert.
+
 SQLAlchemy ORM:
         http://www.sqlalchemy.org/
+
 SQLObject:
         https://github.com/sqlobject/sqlobject
+
+        * Does not support 16-bit integer for ``level``, used 32-bit instead.
+        * Does not support bulk insert.
+
 Tortoise ORM:
         https://github.com/tortoise/tortoise-orm
+
+        * Currently the only ``async`` ORM as part of this suite.
+        * Does not support bulk insert.
 
 Results (SQLite)
 ================
