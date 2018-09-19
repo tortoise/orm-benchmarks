@@ -64,21 +64,23 @@ Results (SQLite)
 Insert                      1163.99        1225.21        1454.15         944.76        1118.88          94.54
 Insert: atomic              8476.31        6975.57       24868.60       10234.70        4912.71         143.16
 Insert: bulk               34120.59       11528.16              —       38764.79              —              —
-Filter: match              68934.47       39307.05      223419.30       75863.22        8140.76              —
-Filter: contains           68340.79       39641.32      226013.34       77658.41        5498.24              —
+Filter: match              68934.47       39307.05      223419.30       75863.22        8140.76       67100.22
+Filter: contains           68340.79       39641.32      226013.34       77658.41        5498.24       80936.28
 ==================== ============== ============== ============== ============== ============== ==============
+
 
 Perf issues identified
 ======================
-* ``aiosqlite`` will always issue an event loop cycle, whereas changing the blocking call to block the first time only yields significant speed ups (~8-16X):
+* ``aiosqlite`` will always issue an event loop cycle, whereas changing the blocking call to block the first time only yields significant speed ups (~10-15X for small queries, and even 20-40% for larger queries):
 
   ==================== ==============
   \                    Tortoise ORM
   ==================== ==============
-  Insert                       874.59
-  Insert: atomic              2280.34
+  Insert                       945.84
+  Insert: atomic              2231.41
+  Filter: match              94516.01
+  Filter: contains           96419.78
   ==================== ==============
-
 
   .. code:: py3
 

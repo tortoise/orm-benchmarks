@@ -16,10 +16,10 @@ python -m test_b
 #python -m test_c
 
 # Test D → Filter on level
-#python -m test_d
+python -m test_d
 
 # Test E → Search in text
-#python -m test_e
+python -m test_e
 
 # Test F → Aggregation
 #python -m test_f
