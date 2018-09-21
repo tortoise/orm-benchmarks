@@ -2,7 +2,7 @@
 
 export ITERATIONS=100
 if [ "x$1" == "xfull" ]; then
-    export ITERATIONS=100000
+    export ITERATIONS=10000
 fi
 
 cd $(dirname $0)
