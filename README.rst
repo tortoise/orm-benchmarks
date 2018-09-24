@@ -135,3 +135,14 @@ Perf issues identified
 * Transactioned inserts appear to be much slower than expected, at about an order of magnitude behind Pony ORM.
 * ``pypika`` calls deepcopy too agressively in ``pypika/utils.py:44``
 * ``tortoise.models.__init__`` → investigate
+
+On ``pypika`` deepcopy use
+--------------------------
+
+Replacing the deepcopy() in _copy with a copy() results in::
+
+  Tortoise ORM, A: Rows/sec:    1252.81
+  Tortoise ORM, B: Rows/sec:    4339.90
+
+Which is a significant speedup (28% and 83%). Which makes one think, why is deepcopy() used? Is our own query builder class suceptible to the same reference-instead-of-copy that Python monoids often are? Is there a way to avoid the common case of using pypika for saving/inserting?
+I think to answer these questions, we need to have tests for checking modification of the monoid, and our suceptibility thereof. And an investigation re the common case of module saving.
