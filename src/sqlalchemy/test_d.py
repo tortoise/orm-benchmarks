@@ -1,13 +1,13 @@
+import os
+import time
+
 from models import Journal, engine
 from sqlalchemy.orm import sessionmaker
 
-import time
-from random import choice
-import os
-
-LEVEL_CHOICE = [10,20,30,40,50]
-
+LEVEL_CHOICE = [10, 20, 30, 40, 50]
 count = int(os.environ.get('ITERATIONS', '1000'))
+
+
 Session = sessionmaker(bind=engine)
 
 start = time.time()
@@ -22,4 +22,3 @@ for _ in range(10):
 now = time.time()
 
 print(f'SQLAlchemy ORM, D: Rows/sec: {count / (now - start): 10.2f}')
-

@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-import re
 import sys
 
 DESC = {
@@ -41,4 +40,3 @@ for test in tests:
     print(' '.join(results).rstrip())
 
 print(' '.join(['=' * len(text) for text in titles]))
-

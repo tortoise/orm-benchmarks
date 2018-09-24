@@ -1,11 +1,11 @@
-from models import Journal
 import time
-import os
-import math
 
-LEVEL_CHOICE = [10,20,30,40,50]
+from models import Journal
 
+LEVEL_CHOICE = [10, 20, 30, 40, 50]
 start = time.time()
+
+
 count = 0
 
 for _ in range(10):

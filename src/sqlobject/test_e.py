@@ -1,8 +1,7 @@
+import time
+
 from models import Journal
 from sqlobject.sqlbuilder import CONTAINSSTRING
-import time
-import os
-import math
 
 start = time.time()
 count = 0

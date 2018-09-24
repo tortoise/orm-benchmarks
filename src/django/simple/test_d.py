@@ -1,14 +1,14 @@
-import django
-django.setup()
+import django  # noqa
+django.setup()  # noqa
+
+import time
 
 from simple.models import Journal
-import time
-import os
-import math
 
-LEVEL_CHOICE = [10,20,30,40,50]
-
+LEVEL_CHOICE = [10, 20, 30, 40, 50]
 start = time.time()
+
+
 count = 0
 
 for _ in range(10):

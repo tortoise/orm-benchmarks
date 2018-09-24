@@ -1,7 +1,6 @@
-from models import Journal
 import time
-import os
-import math
+
+from models import Journal
 
 start = time.time()
 count = 0

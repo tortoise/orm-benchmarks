@@ -1,9 +1,10 @@
-from models import Journal, runasync, init
 import time
-from random import choice
-import os
 
-LEVEL_CHOICE = [10,20,30,40,50]
+from models import Journal, init
+
+from tortoise import run_async
+
+LEVEL_CHOICE = [10, 20, 30, 40, 50]
 
 
 async def runtest():
@@ -21,4 +22,4 @@ async def runtest():
 
     print(f'Tortoise ORM, D: Rows/sec: {count / (now - start): 10.2f}')
 
-runasync(runtest())
+run_async(runtest())

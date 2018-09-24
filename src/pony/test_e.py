@@ -1,7 +1,7 @@
-from models import *
 import time
-import os
-import math
+
+from models import Journal
+from pony.orm import db_session, select
 
 start = time.time()
 count = 0
@@ -15,4 +15,3 @@ with db_session():
 now = time.time()
 
 print(f'Pony ORM, E: Rows/sec: {count / (now - start): 10.2f}')
-

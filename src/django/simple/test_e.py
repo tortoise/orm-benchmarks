@@ -1,11 +1,9 @@
-import django
-django.setup()
+import django  # noqa
+django.setup()  # noqa
+
+import time
 
 from simple.models import Journal
-import time
-import os
-import math
-
 
 start = time.time()
 count = 0

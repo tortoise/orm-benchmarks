@@ -88,25 +88,10 @@ Filter: contains           58496.86       37138.48      237618.71       88206.71
 Performance of Tortoise
 =======================
 
-Profiling
----------
-
-**test_a**:
-    Potential upper bound could be ~3k ops
-
-    ====== ============== =======================================
-    Time % function       At
-    ====== ============== =======================================
-    73.04% execute_insert tortoise/backends/sqlite/executor.py:32
-    44.62% _copy          pypika/utils.py:44
-    39.92% deepcopy       copy.py:132
-    16.15% execute_query  tortoise/backends/sqlite/client:54
-    7.06%  __str__        pypika/queries.py:630
-    ====== ============== =======================================
+Interesting Profiling results
+-----------------------------
 
 **test_b**:
-    Potential upper bound could be ~10kops
-
     ====== ============== =======================================
     Time % function       At
     ====== ============== =======================================
@@ -118,8 +103,6 @@ Profiling
     ====== ============== =======================================
 
 **test_d**:
-    Potential upper bound could be ~1200kops
-
     ====== ============== =======================================
     Time % function       At
     ====== ============== =======================================
@@ -131,18 +114,22 @@ Profiling
 Perf issues identified
 ----------------------
 * No bulk insert operations
-* ``aiosqlite`` runs sqlite in a separate thread, so has thread syncronisation costs. It is vastly better from version 0.6.0, but evidently still there.
 * Transactioned inserts appear to be much slower than expected, at about an order of magnitude behind Pony ORM.
 * ``pypika`` calls deepcopy too agressively in ``pypika/utils.py:44``
 * ``tortoise.models.__init__`` → investigate
 
 On ``pypika`` deepcopy use
---------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Replacing the deepcopy() in _copy with a copy() results in::
 
   Tortoise ORM, A: Rows/sec:    1252.81
   Tortoise ORM, B: Rows/sec:    4339.90
 
-Which is a significant speedup (28% and 83%). Which makes one think, why is deepcopy() used? Is our own query builder class suceptible to the same reference-instead-of-copy that Python monoids often are? Is there a way to avoid the common case of using pypika for saving/inserting?
+Which is a significant speedup (28% and 83%). Which makes one think, why is deepcopy() used?Is our own query builder class suceptible to the same reference-instead-of-copy that Python monoids often are? Is there a way to avoid the common case of using pypika for saving/inserting?
 I think to answer these questions, we need to have tests for checking modification of the monoid, and our suceptibility thereof. And an investigation re the common case of module saving.
+
+Perf fixes applied
+------------------
+
+* ``aiosqlite`` polling misalignment: https://github.com/jreese/aiosqlite/pull/12

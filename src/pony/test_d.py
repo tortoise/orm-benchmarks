@@ -1,11 +1,12 @@
-from models import *
 import time
-import os
-import math
 
-LEVEL_CHOICE = [10,20,30,40,50]
+from models import Journal
+from pony.orm import db_session, select
 
+LEVEL_CHOICE = [10, 20, 30, 40, 50]
 start = time.time()
+
+
 count = 0
 
 with db_session():

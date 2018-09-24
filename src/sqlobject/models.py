@@ -1,7 +1,10 @@
-from sqlobject import *
 from datetime import datetime
 
+from sqlobject import (DatabaseIndex, DateTimeCol, IntCol, SQLObject, StringCol, connectionForURI,
+                       sqlhub)
+
 conn = sqlhub.processConnection = connectionForURI('sqlite:db.sqlite3')
+
 
 class Journal(SQLObject):
     timestamp = DateTimeCol(default=datetime.now)
@@ -9,4 +12,3 @@ class Journal(SQLObject):
     level_index = DatabaseIndex('level')
     text = StringCol(length=255)
     text_index = DatabaseIndex('text')
-
