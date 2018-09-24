@@ -85,8 +85,53 @@ Filter: contains           58496.86       37138.48      237618.71       88206.71
 ==================== ============== ============== ============== ============== ============== ==============
 
 
+Performance of Tortoise
+=======================
+
+Profiling
+---------
+
+**test_a**:
+    Potential upper bound could be ~3k ops
+
+    ====== ============== =======================================
+    Time % function       At
+    ====== ============== =======================================
+    73.04% execute_insert tortoise/backends/sqlite/executor.py:32
+    44.62% _copy          pypika/utils.py:44
+    39.92% deepcopy       copy.py:132
+    16.15% execute_query  tortoise/backends/sqlite/client:54
+    7.06%  __str__        pypika/queries.py:630
+    ====== ============== =======================================
+
+**test_b**:
+    Potential upper bound could be ~10kops
+
+    ====== ============== =======================================
+    Time % function       At
+    ====== ============== =======================================
+    92.06% execute_insert tortoise/backends/sqlite/executor.py:32
+    60.81% _copy          pypika/utils.py:44
+    55.16% deepcopy       copy.py:132
+    18.22% execute_query  tortoise/backends/sqlite/client:54
+    7.71%  __str__        pypika/queries.py:630
+    ====== ============== =======================================
+
+**test_d**:
+    Potential upper bound could be ~1200kops
+
+    ====== ============== =======================================
+    Time % function       At
+    ====== ============== =======================================
+    92.06% execute_select tortoise/backends/sqlite/executor.py:18
+    81.27% __init__       tortoise/models.py:329
+    7.48%  execute_query  tortoise/backends/sqlite/client:54
+    ====== ============== =======================================
+
 Perf issues identified
-======================
+----------------------
 * No bulk insert operations
 * ``aiosqlite`` runs sqlite in a separate thread, so has thread syncronisation costs. It is vastly better from version 0.6.0, but evidently still there.
 * Transactioned inserts appear to be much slower than expected, at about an order of magnitude behind Pony ORM.
+* ``pypika`` calls deepcopy too agressively in ``pypika/utils.py:44``
+* ``tortoise.models.__init__`` → investigate

@@ -5,3 +5,4 @@ pony
 sqlobject
 tortoise-orm
 aiosqlite>=0.6.0
+vmprof
