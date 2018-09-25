@@ -3,6 +3,5 @@ sqlalchemy
 peewee
 pony
 sqlobject
-tortoise-orm
-aiosqlite>=0.6.0
+tortoise-orm>=0.10.7
 vmprof
