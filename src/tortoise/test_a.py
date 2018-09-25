@@ -16,11 +16,10 @@ async def runtest():
 
     start = now = time.time()
     for i in range(count):
-        async with in_transaction():
-            await Journal.create(
-                level=choice(LEVEL_CHOICE),
-                text=f'Insert from A, item {i}'
-            )
+        await Journal.create(
+            level=choice(LEVEL_CHOICE),
+            text=f'Insert from A, item {i}'
+        )
     now = time.time()
 
     print(f'Tortoise ORM, A: Rows/sec: {count / (now - start): 10.2f}')
