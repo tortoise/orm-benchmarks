@@ -77,8 +77,8 @@ Results (SQLite)
 ==================== ============== ============== ============== ============== ============== ==============
 \                    Django         peewee         Pony ORM       SQLAlchemy ORM SQLObject      Tortoise ORM
 ==================== ============== ============== ============== ============== ============== ==============
-Insert                      1103.21        1162.59        1824.69        1027.65        1388.52         977.47
-Insert: atomic              7528.52        6251.02       22635.28       11298.14        4836.22        2362.94
+Insert                      1103.21        1162.59        1824.69        1027.65        1388.52        1288.35
+Insert: atomic              7528.52        6251.02       22635.28       11298.14        4836.22        3603.24
 Insert: bulk               24251.32       15010.20              —       42748.38              —              —
 Filter: match              58217.95       37746.84      232541.34       93751.77       23456.15      110509.19
 Filter: contains           58496.86       37138.48      237618.71       88206.71       21451.85      111521.11
@@ -90,17 +90,6 @@ Performance of Tortoise
 
 Interesting Profiling results
 -----------------------------
-
-**test_b**:
-    ====== ============== =======================================
-    Time % function       At
-    ====== ============== =======================================
-    92.06% execute_insert tortoise/backends/sqlite/executor.py:32
-    60.81% _copy          pypika/utils.py:44
-    55.16% deepcopy       copy.py:132
-    18.22% execute_query  tortoise/backends/sqlite/client:54
-    7.71%  __str__        pypika/queries.py:630
-    ====== ============== =======================================
 
 **test_d**:
     ====== ============== =======================================
@@ -118,18 +107,27 @@ Perf issues identified
 * ``pypika`` calls deepcopy too agressively in ``pypika/utils.py:44``
 * ``tortoise.models.__init__`` → investigate
 
-On ``pypika`` deepcopy use
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+On ``pypika`` cpu utilisation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Now that ``pypika`` has implemented a perf fix for deepcopy, we still want to see if we can avoid using it.
 
-Replacing the deepcopy() in _copy with a copy() results in::
+Adding a very naïve SQL cache results in::
 
-  Tortoise ORM, A: Rows/sec:    1252.81
-  Tortoise ORM, B: Rows/sec:    4339.90
+  Tortoise ORM, A: Rows/sec:    1696.85
+  Tortoise ORM, B: Rows/sec:    5703.24
 
-Which is a significant speedup (28% and 83%). Which makes one think, why is deepcopy() used?Is our own query builder class suceptible to the same reference-instead-of-copy that Python monoids often are? Is there a way to avoid the common case of using pypika for saving/inserting?
-I think to answer these questions, we need to have tests for checking modification of the monoid, and our suceptibility thereof. And an investigation re the common case of module saving.
+Which is a significant speedup. Also there is a lot on unnesseccary work being done, in ``_prepare_insert_values()`` and ``_prepare_insert_columns()`` that can be cached as well, etc..
+This will require letting SQL driver do the escaping for us (which would be preferred, as it would allow their own optimisations to happen). This would require a large restructure.
+We would have to do a very similar change to allow bulk inserts to work.
+
+On ``tortoise.models.__init__``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The ``__init__`` is very generic, and could benefit from some re-ordering. (and even code-generation)
+By doing a quick & dirty change to it I managed to get a ~60% speedup in ``test_d`` & ``test_e``.
+
 
 Perf fixes applied
 ------------------
 
 * ``aiosqlite`` polling misalignment: https://github.com/jreese/aiosqlite/pull/12
+* ``pypika`` improved copy implementation: https://github.com/kayak/pypika/issues/160 https://github.com/kayak/pypika/pull/161
