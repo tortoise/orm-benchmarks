@@ -123,7 +123,10 @@ We would have to do a very similar change to allow bulk inserts to work.
 On ``tortoise.models.__init__``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 The ``__init__`` is very generic, and could benefit from some re-ordering. (and even code-generation)
-By doing a quick & dirty change to it I managed to get a ~60% speedup in ``test_d`` & ``test_e``.
+By doing a quick & dirty change to it I managed to get a 50-54% speedup in ``test_d`` & ``test_e``::
+
+  Tortoise ORM, D: Rows/sec:  170751.78
+  Tortoise ORM, E: Rows/sec:  167254.27
 
 
 Perf fixes applied
