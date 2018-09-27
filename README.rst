@@ -88,22 +88,10 @@ Filter: contains           58496.86       37138.48      237618.71       88206.71
 Performance of Tortoise
 =======================
 
-Interesting Profiling results
------------------------------
-
-**test_d**:
-    ====== ============== =======================================
-    Time % function       At
-    ====== ============== =======================================
-    92.06% execute_select tortoise/backends/sqlite/executor.py:18
-    81.27% __init__       tortoise/models.py:329
-    7.48%  execute_query  tortoise/backends/sqlite/client:54
-    ====== ============== =======================================
-
 Perf issues identified
 ----------------------
 * No bulk insert operations
-* Transactioned inserts appear to be much slower than expected, at about an order of magnitude behind Pony ORM.
+* Transactioned inserts ``pypika`` CPU utilisation. Whilst improved still the slowest.
 * ``tortoise.models.__init__`` → investigate something more efficient than if-elif-elif-elif
 
 On ``pypika`` cpu utilisation
@@ -131,6 +119,12 @@ By doing a quick & dirty change to it I suspect we still have ~20% of a speedup 
 Perf fixes applied
 ------------------
 
-* ``aiosqlite`` polling misalignment: https://github.com/jreese/aiosqlite/pull/12
-* ``pypika`` improved copy implementation: https://github.com/kayak/pypika/issues/160 https://github.com/kayak/pypika/pull/161
-* ``tortoise.models.__init__`` restructured init to do less unnessecary work, moved error cases to back https://github.com/tortoise/tortoise-orm/pull/51
+1) **``aiosqlite`` polling misalignment** *(sqlite specific)*
+
+   (20-40% speedup for retrieval, **10-15X** speedup for insertion): https://github.com/jreese/aiosqlite/pull/12
+2) **``pypika`` improved copy implementation** *(generic)*
+
+   (53% speedup for insertion): https://github.com/kayak/pypika/issues/160
+3) **``tortoise.models.__init__`` restructure** *(generic)*
+
+   (25-30% speedup for retrieval) https://github.com/tortoise/tortoise-orm/pull/51
