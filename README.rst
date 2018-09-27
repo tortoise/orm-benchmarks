@@ -77,11 +77,11 @@ Results (SQLite)
 ==================== ============== ============== ============== ============== ============== ==============
 \                    Django         peewee         Pony ORM       SQLAlchemy ORM SQLObject      Tortoise ORM
 ==================== ============== ============== ============== ============== ============== ==============
-Insert                      1103.21        1162.59        1824.69        1027.65        1388.52        1288.35
-Insert: atomic              7528.52        6251.02       22635.28       11298.14        4836.22        3603.24
+Insert                      1103.21        1162.59        1824.69        1027.65        1388.52        1357.67
+Insert: atomic              7528.52        6251.02       22635.28       11298.14        4836.22        3612.45
 Insert: bulk               24251.32       15010.20              —       42748.38              —              —
-Filter: match              58217.95       37746.84      232541.34       93751.77       23456.15      110509.19
-Filter: contains           58496.86       37138.48      237618.71       88206.71       21451.85      111521.11
+Filter: match              58217.95       37746.84      232541.34       93751.77       23456.15      143977.91
+Filter: contains           58496.86       37138.48      237618.71       88206.71       21451.85      138549.93
 ==================== ============== ============== ============== ============== ============== ==============
 
 
@@ -104,8 +104,7 @@ Perf issues identified
 ----------------------
 * No bulk insert operations
 * Transactioned inserts appear to be much slower than expected, at about an order of magnitude behind Pony ORM.
-* ``pypika`` calls deepcopy too agressively in ``pypika/utils.py:44``
-* ``tortoise.models.__init__`` → investigate
+* ``tortoise.models.__init__`` → investigate something more efficient than if-elif-elif-elif
 
 On ``pypika`` cpu utilisation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -122,8 +121,8 @@ We would have to do a very similar change to allow bulk inserts to work.
 
 On ``tortoise.models.__init__``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-The ``__init__`` is very generic, and could benefit from some re-ordering. (and even code-generation)
-By doing a quick & dirty change to it I managed to get a 50-54% speedup in ``test_d`` & ``test_e``::
+The ``__init__`` still has a very long elif chain, using a lookup could give us a significant speedup:
+By doing a quick & dirty change to it I suspect we still have ~20% of a speedup to gain in ``test_d`` & ``test_e``::
 
   Tortoise ORM, D: Rows/sec:  170751.78
   Tortoise ORM, E: Rows/sec:  167254.27
@@ -134,3 +133,4 @@ Perf fixes applied
 
 * ``aiosqlite`` polling misalignment: https://github.com/jreese/aiosqlite/pull/12
 * ``pypika`` improved copy implementation: https://github.com/kayak/pypika/issues/160 https://github.com/kayak/pypika/pull/161
+* ``tortoise.models.__init__`` restructured init to do less unnessecary work, moved error cases to back https://github.com/tortoise/tortoise-orm/pull/51
