@@ -77,11 +77,11 @@ Results (SQLite)
 ==================== ============== ============== ============== ============== ============== ==============
 \                    Django         peewee         Pony ORM       SQLAlchemy ORM SQLObject      Tortoise ORM
 ==================== ============== ============== ============== ============== ============== ==============
-Insert                      1103.21        1162.59        1824.69        1027.65        1388.52        1357.67
-Insert: atomic              7528.52        6251.02       22635.28       11298.14        4836.22        3612.45
-Insert: bulk               24251.32       15010.20              —       42748.38              —              —
-Filter: match              58217.95       37746.84      232541.34       93751.77       23456.15      143977.91
-Filter: contains           58496.86       37138.48      237618.71       88206.71       21451.85      138549.93
+Insert                      1541.33        1636.39        1723.31        1046.88        1398.05        1168.51
+Insert: atomic              8606.80        7195.57       25081.35       10807.63        5028.46        3434.66
+Insert: bulk               34608.04       16296.22              —       41225.71              —              —
+Filter: match              77777.10       44015.95      236084.81       91546.02       23209.64      156315.69
+Filter: contains           74965.12       43531.28      229073.64       87644.81       20781.49      158048.75
 ==================== ============== ============== ============== ============== ============== ==============
 
 
@@ -109,11 +109,9 @@ We would have to do a very similar change to allow bulk inserts to work.
 
 On ``tortoise.models.__init__``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-The ``__init__`` still has a very long elif chain, using a lookup could give us a significant speedup:
-By doing a quick & dirty change to it I suspect we still have ~20% of a speedup to gain in ``test_d`` & ``test_e``::
-
-  Tortoise ORM, D: Rows/sec:  170751.78
-  Tortoise ORM, E: Rows/sec:  167254.27
+The majority of time is spent doing type conversion/cleanup: ``field_object.to_python_value(value)``.
+This is something that is correct, so I deem it fine as is, and we don't try to make it run any faster right now.
+Besides, we are second fastest for these metrics.
 
 
 Perf fixes applied
@@ -128,3 +126,7 @@ Perf fixes applied
 3) **``tortoise.models.__init__`` restructure** *(generic)*
 
    (25-30% speedup for retrieval) https://github.com/tortoise/tortoise-orm/pull/51
+
+4) **``tortoise.models.__init__`` restructure** *(generic)*
+
+   (9-11% speedup for retrieval) https://github.com/tortoise/tortoise-orm/pull/52
