@@ -22,12 +22,12 @@ python -m simple.test_d
 # Test E → Search in text
 python -m simple.test_e
 
-# Test F → Aggregation
-#python -m simple.test_f
+# Test F → Filter limit 20
+python -m simple.test_f
 
-# Test G → Cursor efficiency
-#python -m simple.test_g
+# Test G → Get
+python -m simple.test_g
 
 # teardown DB
-rm -f db.sqlite3
+#rm -f db.sqlite3
 

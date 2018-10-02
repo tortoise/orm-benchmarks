@@ -20,11 +20,11 @@ python -m test_d
 # Test E → Search in text
 python -m test_e
 
-# Test F → Aggregation
-#python -m test_f
+# Test F → Filter limit 20
+python -m test_f
 
-# Test G → Cursor efficiency
-#python -m test_g
+# Test G → Get
+python -m test_g
 
 # teardown DB
 #rm -f db.sqlite3

@@ -7,8 +7,8 @@ DESC = {
     'C': 'Insert: bulk',
     'D': 'Filter: match',
     'E': 'Filter: contains',
-    'F': 'Aggregation',
-    'G': 'Cursor efficiency',
+    'F': 'Filter: limit 20',
+    'G': 'Get',
 }
 
 val = sys.stdin.read()
