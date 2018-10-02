@@ -92,7 +92,7 @@ Versions
 --------
 
 ==================== ============== ============== ============== ==============
-Tortoise ORM:        v0.10.6        v0.10.7        v0.10.8        latest
+Tortoise ORM:        v0.10.6        v0.10.7        v0.10.8a       v0.10.8
 -------------------- -------------- -------------- -------------- --------------
 Seedup (Insert & Filter)                12.8 & 1.3     18.2 & 1.9     18.2 & 2.1
 =================================== ============== ============== ==============
@@ -112,14 +112,30 @@ On ``pypika`` cpu utilisation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Now that ``pypika`` has implemented a perf fix for deepcopy, we still want to see if we can avoid using it.
 
-Adding a very naïve SQL cache results in::
+Adding a simple SQL-INSERT cache results in::
 
-  Tortoise ORM, A: Rows/sec:    1696.85
-  Tortoise ORM, B: Rows/sec:    5703.24
+  Tortoise ORM, A: Rows/sec:    1440.47
+  Tortoise ORM, B: Rows/sec:    6896.50
 
-Which is a significant speedup. Also there is a lot on unnesseccary work being done, in ``_prepare_insert_values()`` and ``_prepare_insert_columns()`` that can be cached as well, etc..
-This will require letting SQL driver do the escaping for us (which would be preferred, as it would allow their own optimisations to happen). This would require a large restructure.
+Which is a significant speedup.
+This will require letting SQL driver do the escaping for us.
 We would have to do a very similar change to allow bulk inserts to work.
+
+On ``aiosqlite`` round trips
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+There is a high fixed cost for every instruction sent to ``aiosqlite`` due to synchronisation. It would be great if we could queue multiple command so we can save on the round-trip. Even if we can only do a execute_fetchall() combo, it would be great.
+
+Adding a special execute_insert ``aiosqlite`` macro to do all the sync logic in one go results in::
+
+    Tortoise ORM, A: Rows/sec:    1384.23
+    Tortoise ORM, B: Rows/sec:    5136.31
+
+But doing both this and the simple SQL-INSERT cache results in::
+
+    Tortoise ORM, A: Rows/sec:    1759.65
+    Tortoise ORM, B: Rows/sec:   13454.37
+
+Which is a really great speedup. Putting Tortoise ORM in second place on every benchmark :-)
 
 On ``tortoise.models.__init__``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
