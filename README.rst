@@ -77,13 +77,13 @@ Results (SQLite)
 ==================== ============== ============== ============== ============== ============== ==============
 \                    Django         peewee         Pony ORM       SQLAlchemy ORM SQLObject      Tortoise ORM
 ==================== ============== ============== ============== ============== ============== ==============
-Insert                      1171.14        1103.92        1050.57         743.95         892.70        1148.99
-Insert: atomic              8660.37        6885.19       24232.86       10222.18        4073.83        6881.08
-Insert: bulk               33846.46       19532.46              —       39890.63              —              —
-Filter: match              75045.46       42126.30      218371.56       82652.81       18369.44      159923.25
-Filter: contains           73771.59       41555.80      217527.20       78552.51       18882.55      153463.44
-Filter: limit 20           32356.72       22495.73      336676.52       32743.20       25106.52       30905.77
-Get                         2913.02        2646.62        8768.91        2830.26        6074.93        1996.00
+Insert                      1553.57        1651.90        1937.00        1042.08        1353.27        2014.71
+Insert: atomic              8672.27        6690.74       26892.96       11031.48        4934.03       14052.90
+Insert: bulk               34327.99       17854.72              —       42179.58              —              —
+Filter: match              77871.60       43615.76      231521.96       95877.78       23712.88      166211.40
+Filter: contains           75387.23       43338.21      240953.01       90177.86       21903.76      160933.64
+Filter: limit 20           32671.26       27783.54      366764.49       36529.24       26849.95       32052.33
+Get                         2971.37        3488.66       10797.08        2978.16        6457.87        1998.98
 ==================== ============== ============== ============== ============== ============== ==============
 
 
@@ -93,37 +93,29 @@ Performance of Tortoise
 Versions
 --------
 
-==================== ============== ============== ============== ============== ==============
-Tortoise ORM:        v0.10.6        v0.10.7        v0.10.8a       v0.10.8        latest
--------------------- -------------- -------------- -------------- -------------- --------------
-Seedup (Insert & Filter)                12.8 & 1.3     18.2 & 1.9     18.2 & 2.1     33.6 & 2.1
-=================================== ============== ============== ============== ==============
-Insert                        94.54         977.47        1168.51        1168.51        1148.99
-Insert: atomic               143.16        2362.94        3434.66        3434.66        6881.08
-Filter: match              67100.22      110509.19      143977.91      156315.69      159923.25
-Filter: contains           80936.28      111521.11      138549.93      158048.75      153463.44
-Filter: limit 20                  —              —              —              —       30905.77
-Get                               —              —              —              —        1996.00
-==================== ============== ============== ============== ============== ==============
+==================== ============== ============== ============== ==============
+Tortoise ORM:        v0.10.6        v0.10.7        v0.10.8        branch
+-------------------- -------------- -------------- -------------- --------------
+Seedup (Insert & Filter)                12.8 & 1.3     18.2 & 2.1     67.5 & 2.2
+=================================== ============== ============== ==============
+Insert                        94.54         977.47        1168.51        2014.71
+Insert: atomic               143.16        2362.94        3434.66       14052.90
+Filter: match              67100.22      110509.19      156315.69      166211.40
+Filter: contains           80936.28      111521.11      158048.75      160933.64
+Filter: limit 20                  —              —              —       32052.33
+Get                               —              —              —        1998.98
+==================== ============== ============== ============== ==============
 
 Perf issues identified
 ----------------------
 * No bulk insert operations
-* Limit filter is much slower than large filters
-* Get operation is slow
+* Limit filter is much slower than large filters (seems DB limited, except for Pony ORM)
+* Get operation is slow (possibly CPU limited)
 
-On ``pypika`` cpu utilisation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Now that ``pypika`` has implemented a perf fix for deepcopy, we still want to see if we can avoid using it.
-
-Adding a simple SQL-INSERT cache results in::
-
-    Tortoise ORM, A: Rows/sec:    1759.65
-    Tortoise ORM, B: Rows/sec:   13454.37
-
-Which is a significant speedup of 36-260%.
-This will require letting SQL driver do the escaping for us.
-We would have to do a very similar change to allow bulk inserts to work.
+On ``pypika`` performance
+^^^^^^^^^^^^^^^^^^^^^^^^^
+Pypika is unfortunately quite slow, but it does provide guarantees of immutability that we can use to speed up query generation.
+e.g. partially build query, and then re-use it later on.
 
 On ``tortoise.models.__init__``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -149,6 +141,10 @@ Perf fixes applied
 
    (9-11% speedup for retrieval) https://github.com/tortoise/tortoise-orm/pull/52
 
-5) **``aiosqlite`` macros** *(sqlite specific)* *(not yet reflecting)*
+5) **``aiosqlite`` macros** *(sqlite specific)*
 
    (1-5% speedup for retrieval, 10-40% speedup for insertion) https://github.com/jreese/aiosqlite/pull/13
+
+6) **Simple prepared insert statements** *(generic)*
+
+   (35-250% speedup for insertion) https://github.com/jreese/aiosqlite/pull/13 https://github.com/tortoise/tortoise-orm/pull/54
