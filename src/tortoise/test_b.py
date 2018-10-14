@@ -25,4 +25,5 @@ async def runtest():
 
     print(f'Tortoise ORM, B: Rows/sec: {count / (now - start): 10.2f}')
 
-run_async(runtest())
+if __name__ == '__main__':
+    run_async(runtest())
