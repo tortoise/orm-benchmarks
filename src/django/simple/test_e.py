@@ -1,10 +1,12 @@
+try:
+    import django  # noqa
+    django.setup()  # noqa
+finally:
+    pass
+
 import time
 
-import django  # noqa
 from simple.models import Journal
-
-django.setup()  # noqa
-
 
 start = time.time()
 count = 0

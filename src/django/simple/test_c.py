@@ -1,12 +1,14 @@
+try:
+    import django  # noqa
+    django.setup()  # noqa
+finally:
+    pass
+
 import os
 import time
 from random import choice
 
-import django  # noqa
 from simple.models import Journal
-
-django.setup()  # noqa
-
 
 LEVEL_CHOICE = [10, 20, 30, 40, 50]
 count = int(os.environ.get('ITERATIONS', '1000'))

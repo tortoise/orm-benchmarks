@@ -3,11 +3,11 @@ import sys
 
 DESC = {
     'A': 'Insert',
-    'B': 'Insert: atomic',
-    'C': 'Insert: bulk',
-    'D': 'Filter: match',
-    'E': 'Filter: contains',
-    'F': 'Filter: limit 20',
+    'B': 'Insert:\xa0atomic',
+    'C': 'Insert:\xa0bulk',
+    'D': 'Filter:\xa0match',
+    'E': 'Filter:\xa0contains',
+    'F': 'Filter:\xa0limit\xa020',
     'G': 'Get',
 }
 

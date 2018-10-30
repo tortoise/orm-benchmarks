@@ -74,17 +74,17 @@ Tortoise ORM:
 Results (SQLite)
 ================
 
-Results for SQLite, using the ``SHM`` in-memory filesystem on Linux, to try and make the tests more CPU limited, but still do FS round-trips. Also more consistent than an SSD.
+Results for SQLite, using the ``SHM`` in-memory filesystem on Linux, to try and make the tests more CPU limited, but still do FS round-trips. Also more consistent than an SSD.i
 
 ==================== ========== ========== ========== ============== ========== ============ =====================
 \                    Django     peewee     Pony ORM   SQLAlchemy ORM SQLObject  Tortoise ORM Tortoise ORM (uvloop)
 ==================== ========== ========== ========== ============== ========== ============ =====================
 Insert                  4980.95    5045.09    6248.03        1845.74    3665.67      5792.54               7918.78
-Insert: atomic          8708.52    7167.83   24410.57       10462.22    4785.33      9503.29              14617.72
-Insert: bulk           33074.79   36294.24          —       38256.39          —            —                     —
-Filter: match          72155.73   42314.92  225353.25       85566.52   22437.40    162902.83             164817.51
-Filter: contains       72412.91   42792.44  225881.36       79792.05   19566.61    171520.22             159837.96
-Filter: limit 20       31142.74   26337.39  359444.32       35385.71   24940.91     38700.04              43038.83
+Insert: atomic          8708.52    7167.83   24410.57       10462.22    4785.33      9503.29              14617.72
+Insert: bulk           33074.79   36294.24          —       38256.39          —            —                     —
+Filter: match          72155.73   42314.92  225353.25       85566.52   22437.40    162902.83             164817.51
+Filter: contains       72412.91   42792.44  225881.36       79792.05   19566.61    171520.22             159837.96
+Filter: limit 20       31142.74   26337.39  359444.32       35385.71   24940.91     38700.04              43038.83
 Get                     2823.60    3404.14    9964.79        2903.34    6182.48      2449.86               2838.41
 ==================== ========== ========== ========== ============== ========== ============ =====================
 
