@@ -11,5 +11,5 @@ class Journal(db.Entity):
     text = Required(str, max_len=255)
 
 
-db.bind(provider='sqlite', filename='db.sqlite3', create_db=True)
+db.bind(provider='sqlite', filename='/dev/shm/db.sqlite3', create_db=True)
 db.generate_mapping(create_tables=True)

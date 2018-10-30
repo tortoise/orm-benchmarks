@@ -2,7 +2,7 @@ from datetime import datetime
 
 from peewee import CharField, DateTimeField, Model, SmallIntegerField, SqliteDatabase
 
-db = SqliteDatabase('db.sqlite3')
+db = SqliteDatabase('/dev/shm/db.sqlite3')
 
 
 class Journal(Model):

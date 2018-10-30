@@ -1,19 +1,15 @@
 import os
 import time
-
-from models import Journal, init
-
-from tortoise import run_async
 from random import randint
+
+from models import Journal
 
 count = int(os.environ.get('ITERATIONS', '1000'))
 maxval = count - 1
 count *= 2
 
 
-async def runtest():
-    await init()
-
+async def runtest(loopstr):
     start = now = time.time()
 
     for _ in range(count):
@@ -21,6 +17,4 @@ async def runtest():
 
     now = time.time()
 
-    print(f'Tortoise ORM, G: Rows/sec: {count / (now - start): 10.2f}')
-
-run_async(runtest())
+    print(f'Tortoise ORM{loopstr}, G: Rows/sec: {count / (now - start): 10.2f}')

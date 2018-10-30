@@ -5,7 +5,6 @@ from random import randint
 from models import Journal
 from pony.orm import db_session, select
 
-
 count = int(os.environ.get('ITERATIONS', '1000'))
 maxval = count - 1
 count *= 2

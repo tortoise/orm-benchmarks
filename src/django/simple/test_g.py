@@ -1,11 +1,12 @@
-import django  # noqa
-django.setup()  # noqa
-
 import os
 import time
 from random import randint
 
+import django  # noqa
 from simple.models import Journal
+
+django.setup()  # noqa
+
 
 count = int(os.environ.get('ITERATIONS', '1000'))
 maxval = count - 1

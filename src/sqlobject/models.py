@@ -3,7 +3,7 @@ from datetime import datetime
 from sqlobject import (DatabaseIndex, DateTimeCol, IntCol, SQLObject, StringCol, connectionForURI,
                        sqlhub)
 
-conn = sqlhub.processConnection = connectionForURI('sqlite:db.sqlite3')
+conn = sqlhub.processConnection = connectionForURI('sqlite:/dev/shm/db.sqlite3')
 
 
 class Journal(SQLObject):

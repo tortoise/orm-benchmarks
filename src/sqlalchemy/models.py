@@ -3,7 +3,7 @@ from datetime import datetime
 from sqlalchemy import Column, DateTime, Integer, SmallInteger, String, create_engine
 from sqlalchemy.ext.declarative import declarative_base
 
-engine = create_engine('sqlite:///db.sqlite3')
+engine = create_engine('sqlite:////dev/shm/db.sqlite3')
 
 Base = declarative_base()
 

@@ -4,7 +4,7 @@ cd $(dirname $0)
 
 # setup DB
 export DJANGO_SETTINGS_MODULE="simple.settings"
-rm -f db.sqlite3
+rm -f /dev/shm/db.sqlite3
 ./manage-simple.py migrate -v 0
 
 # Test A → Insert
@@ -29,5 +29,5 @@ python -m simple.test_f
 python -m simple.test_g
 
 # teardown DB
-#rm -f db.sqlite3
+rm -f /dev/shm/db.sqlite3
 

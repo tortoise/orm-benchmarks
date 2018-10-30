@@ -3,7 +3,7 @@
 cd $(dirname $0)
 
 # setup DB
-rm -f db.sqlite3
+rm -f /dev/shm/db.sqlite3
 
 # Test A → Insert
 python -m test_a
@@ -27,5 +27,5 @@ python -m test_f
 python -m test_g
 
 # teardown DB
-#rm -f db.sqlite3
+rm -f /dev/shm/db.sqlite3
 

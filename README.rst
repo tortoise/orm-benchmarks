@@ -74,24 +74,35 @@ Tortoise ORM:
 Results (SQLite)
 ================
 
-==================== ============== ============== ============== ============== ============== ==============
-\                    Django         peewee         Pony ORM       SQLAlchemy ORM SQLObject      Tortoise ORM
-==================== ============== ============== ============== ============== ============== ==============
-Insert                      1553.57        1651.90        1937.00        1042.08        1353.27        2062.60
-Insert: atomic              8672.27        6690.74       26892.96       11031.48        4934.03       14254.19
-Insert: bulk               34327.99       17854.72              —       42179.58              —              —
-Filter: match              77871.60       43615.76      231521.96       95877.78       23712.88      169346.58
-Filter: contains           75387.23       43338.21      240953.01       90177.86       21903.76      163696.72
-Filter: limit 20           32671.26       27783.54      366764.49       36529.24       26849.95       40244.54
-Get                         2971.37        3488.66       10797.08        2978.16        6457.87        3020.30
-==================== ============== ============== ============== ============== ============== ==============
+Results for SQLite, using the ``SHM`` in-memory filesystem on Linux, to try and make the tests more CPU limited, but still do FS round-trips. Also more consistent than an SSD.
 
+==================== ========== ========== ========== ============== ========== ============ =====================
+\                    Django     peewee     Pony ORM   SQLAlchemy ORM SQLObject  Tortoise ORM Tortoise ORM (uvloop)
+==================== ========== ========== ========== ============== ========== ============ =====================
+Insert                  4980.95    5045.09    6248.03        1845.74    3665.67      5792.54               7918.78
+Insert: atomic          8708.52    7167.83   24410.57       10462.22    4785.33      9503.29              14617.72
+Insert: bulk           33074.79   36294.24          —       38256.39          —            —                     —
+Filter: match          72155.73   42314.92  225353.25       85566.52   22437.40    162902.83             164817.51
+Filter: contains       72412.91   42792.44  225881.36       79792.05   19566.61    171520.22             159837.96
+Filter: limit 20       31142.74   26337.39  359444.32       35385.71   24940.91     38700.04              43038.83
+Get                     2823.60    3404.14    9964.79        2903.34    6182.48      2449.86               2838.41
+==================== ========== ========== ========== ============== ========== ============ =====================
+
+Quick analysis
+--------------
+* Pony ORM is heavily optimised for performance, it wins nearly every metric, and often by a large margin.
+* Django & SQLAlchemy is surprisingly similar in performance.
+* Tortoise ORM is now competitive, especially when using ``uvloop``
+* Generally ``uvloop`` provides a modest perf increase.
+* ``Get`` is surprisingly slow
 
 Performance of Tortoise
 =======================
 
 Versions
 --------
+
+(benchmarks changed, so the below is not directly comparable to above)
 
 ==================== ============== ================ ================ ================
 Tortoise ORM:        v0.10.6        v0.10.7          v0.10.8          v0.10.9
@@ -112,11 +123,6 @@ Perf issues identified
 * Limit filter is much slower than large filters (seems DB limited, except for Pony ORM)
 * Get operation is slow (likely slow SQL generation)
 
-On ``pypika`` performance
-^^^^^^^^^^^^^^^^^^^^^^^^^
-Pypika is unfortunately quite slow, but it does provide guarantees of immutability that we can use to speed up query generation.
-e.g. partially build query, and then re-use it later on.
-
 On ``tortoise.models.__init__``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 The majority of time is spent doing type conversion/cleanup: ``field_object.to_python_value(value)``.
@@ -129,6 +135,7 @@ Since pypika is immutable, and our Queryset object is as well, we need tests to 
 Then we can aggresively cache querysets.
 Also spending a lot of time in _copy.
 
+Also, we can make more queries use parameterised queries, this is a large ``pypika`` undertaking, though.
 
 Perf fixes applied
 ------------------

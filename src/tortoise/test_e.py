@@ -1,13 +1,9 @@
 import time
 
-from models import Journal, init
-
-from tortoise import run_async
+from models import Journal
 
 
-async def runtest():
-    await init()
-
+async def runtest(loopstr):
     start = now = time.time()
     count = 0
 
@@ -18,6 +14,4 @@ async def runtest():
 
     now = time.time()
 
-    print(f'Tortoise ORM, E: Rows/sec: {count / (now - start): 10.2f}')
-
-run_async(runtest())
+    print(f'Tortoise ORM{loopstr}, E: Rows/sec: {count / (now - start): 10.2f}')
