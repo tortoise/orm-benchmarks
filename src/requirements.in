@@ -3,5 +3,6 @@ sqlalchemy
 peewee
 pony
 sqlobject
-tortoise-orm>=0.10.7
+tortoise-orm
 vmprof
+uvloop
