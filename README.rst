@@ -79,14 +79,15 @@ Results for SQLite, using the ``SHM`` in-memory filesystem on Linux, to try and 
 ==================== ========== ========== ========== ============== ========== ============ =====================
 \                    Django     peewee     Pony ORM   SQLAlchemy ORM SQLObject  Tortoise ORM Tortoise ORM (uvloop)
 ==================== ========== ========== ========== ============== ========== ============ =====================
-Insert                  4980.95    5045.09    6248.03        1845.74    3665.67      5792.54               7918.78
-Insert: atomic          8708.52    7167.83   24410.57       10462.22    4785.33      9503.29              14617.72
-Insert: bulk           33074.79   36294.24          —       38256.39          —            —                     —
-Filter: match          72155.73   42314.92  225353.25       85566.52   22437.40    162902.83             164817.51
-Filter: contains       72412.91   42792.44  225881.36       79792.05   19566.61    171520.22             159837.96
-Filter: limit 20       31142.74   26337.39  359444.32       35385.71   24940.91     38700.04              43038.83
-Get                     2823.60    3404.14    9964.79        2903.34    6182.48      2449.86               2838.41
+Insert                  5024.26    5157.71    6430.14        1943.15    3674.86      6348.48               8388.74
+Insert: atomic          8653.42    7205.92   25789.04       10751.69    4487.53      7783.54              14721.20
+Insert: bulk           34798.17   38721.78          —       39011.92          —            —                     —
+Filter: match          73148.56   43515.97  230897.70       86517.36   22730.26    174243.10             171692.38
+Filter: contains       72557.40   42749.12  229311.91       82931.50   20169.80    169622.54             166809.77
+Filter: limit 20       32073.90   27200.47  359534.29       35812.56   25912.09     48203.39              50615.73
+Get                     2823.66    3427.24   10284.42        2905.12    6311.47      3253.94               3770.69
 ==================== ========== ========== ========== ============== ========== ============ =====================
+
 
 Quick analysis
 --------------
@@ -165,3 +166,7 @@ Perf fixes applied
 7) **pre-generate initial pypika query object per model** *(generic)*
 
    (25-50% speedup for small fetch operations) https://github.com/tortoise/tortoise-orm/pull/54
+
+8) **pre-generate filter map, and standard select for all values per model** *(generic)*
+
+    (15-30% speedup for small fetch operations) https://github.com/tortoise/tortoise-orm/pull/64
