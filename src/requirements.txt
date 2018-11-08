@@ -17,7 +17,7 @@ idna==2.7                 # via requests
 peewee==3.7.1
 pony==0.7.6
 pydispatcher==2.0.5       # via sqlobject
-pypika==0.15.8            # via tortoise-orm
+pypika==0.16.0            # via tortoise-orm
 pytz==2018.7              # via django, vmprof
 requests==2.20.0          # via vmprof
 six==1.11.0               # via vmprof
