@@ -48,16 +48,50 @@ ORMs:
 Django:
         https://www.djangoproject.com/
 
+        Pros:
+
+        * Provides all the essential features
+        * Simple, clean, API
+        * Great test framework
+        * Excellent documentation
+        * Migrations done right™
+
+        Cons:
+
+        * Brings whole Django along with it
+
 peewee:
         https://github.com/coleifer/peewee
 
+
 Pony ORM:
         https://github.com/ponyorm/pony
+
+        Pros:
+
+        * Fast
+        * Does cacheing automatically
+
+        Cons:
 
         * Does not support bulk insert.
 
 SQLAlchemy ORM:
         http://www.sqlalchemy.org/
+
+        Pros:
+
+        * The "de facto" ORM in the python world
+        * Supports just about every feature and edge case
+        * Documentation re DB quirks is second to none
+
+        Cons:
+
+        * Complicated, layers upon layers of leaky abstractions
+        * You have to manage transactions manually
+        * You have to write a script to get DDL SQL
+        * Documentation expects you to be intimate with SQLAlchemy
+        * Migrations are add ons
 
 SQLObject:
         https://github.com/sqlobject/sqlobject
@@ -79,15 +113,14 @@ Results for SQLite, using the ``SHM`` in-memory filesystem on Linux, to try and 
 ==================== ========== ========== ========== ============== ========== ============ =====================
 \                    Django     peewee     Pony ORM   SQLAlchemy ORM SQLObject  Tortoise ORM Tortoise ORM (uvloop)
 ==================== ========== ========== ========== ============== ========== ============ =====================
-Insert                  5215.75    5407.97    6466.60        2083.00    3870.31      6988.67               9265.30
-Insert: atomic          8556.84    6828.68   24183.37       11708.85    4753.63     10817.68              14704.26
-Insert: bulk           32403.06   39708.90          —       45805.25          —            —                     —
-Filter: match          73434.87   40110.75  242115.31       96515.65   23233.39    189979.86             185781.73
-Filter: contains       80117.92   47144.10  235717.16       89914.74   21471.91    167525.46             177661.70
-Filter: limit 20       33787.97   24033.08  399068.56       37986.63   27421.46     56495.16              62932.39
-Get                     3161.48    3005.87   11316.85        3116.32    6658.96      3847.30               4781.68
+Insert                  5491.01    5754.88    7020.89        2093.09    3981.55      7217.68               9870.59
+Insert: atomic          9124.65    7942.45   27388.15       12126.29    5040.19     12060.34              18452.56
+Insert: bulk           41762.54   43011.31          —       50059.31          —            —                     —
+Filter: match          79831.26   46908.29  241415.95       96177.74   24888.37    184709.55             186298.75
+Filter: contains       77758.16   45635.78  236241.52       89189.57   21633.57    181256.64             177623.78
+Filter: limit 20       33939.17   29080.69  411642.13       38656.97   27887.70     57385.63              65742.82
+Get                     3173.50    3700.66   11553.29        3192.85    6775.69      4013.92               4899.04
 ==================== ========== ========== ========== ============== ========== ============ =====================
-
 
 Quick analysis
 --------------
@@ -103,27 +136,30 @@ Performance of Tortoise
 Versions
 --------
 
-==================== ============== ================ ================ ================ ================
-Tortoise ORM:        v0.10.6        v0.10.7          v0.10.8          v0.10.9          v0.10.11
--------------------- -------------- ---------------- ---------------- ---------------- ----------------
-Seedup (Insert & Big & Small)         19.4, 1.5, 6.1  25.9, 2.0, 6.6    81.8, 2.2, 8.7  95.3, 2.4, 13.1
-=================================== ================ ================ ================ ================
-Insert                        89.89          2180.38          2933.19          7635.42          8297.53
-Insert: atomic               149.59          2481.16          3275.53         11966.53         14791.36
-Filter: match              55866.14        101035.06        139482.12        158997.41        165398.56
-Filter: contains           76803.14        100536.06        128669.50        142954.66        167127.12
-Filter: limit 20            4583.53         27830.14         29995.23         39170.17         58740.05
-Get                          233.69          1868.15          2136.20          2818.41          4411.01
-==================== ============== ================ ================ ================ ================
+==================== ============== ================ ================ ================ ================ ================
+Tortoise ORM:        v0.10.6        v0.10.7          v0.10.8          v0.10.9          v0.10.11         v0.11.3
+-------------------- -------------- ---------------- ---------------- ---------------- ---------------- ----------------
+Seedup (Insert & Big & Small)         19.4, 1.5, 6.1  25.9, 2.0, 6.6    81.8, 2.2, 8.7  95.3, 2.4, 13.1 118.2, 2.7, 14.6
+=================================== ================ ================ ================ ================ ================
+Insert                        89.89          2180.38          2933.19          7635.42          8297.53          9870.59
+Insert: atomic               149.59          2481.16          3275.53         11966.53         14791.36         18452.56
+Filter: match              55866.14        101035.06        139482.12        158997.41        165398.56        186298.75
+Filter: contains           76803.14        100536.06        128669.50        142954.66        167127.12        177623.78
+Filter: limit 20            4583.53         27830.14         29995.23         39170.17         58740.05         65742.82
+Get                          233.69          1868.15          2136.20          2818.41          4411.01          4899.04
+==================== ============== ================ ================ ================ ================ ================
 
 Perf issues identified
 ----------------------
 * No bulk insert operations
-* Limit filter is much slower than large filters (seems DB limited, except for Pony ORM)
+* Limit filter is much slower than large filters (seems DB limited, except for Pony ORM — suspect cacheing)
 * Get operation is slow (likely slow SQL generation)
+* ``base.executor._field_to_db()`` could be replaced with a pre-computed dict lookup
 
 On ``tortoise.models.__init__``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+``Model.__init__`` is 72% of large queries, and 28% of small queries
+
 The majority of time is spent doing type conversion/cleanup: ``field_object.to_python_value(value)``.
 This is something that is correct, so I deem it fine as is, and we don't try to make it run any faster right now.
 Besides, we are second fastest for these metrics.
@@ -132,9 +168,8 @@ On Queryset performace
 ^^^^^^^^^^^^^^^^^^^^^^
 Since pypika is immutable, and our Queryset object is as well, we need tests to guarantee our immutability.
 Then we can aggresively cache querysets.
-Also spending a lot of time in _copy.
 
-Also, we can make more queries use parameterised queries, this is a large ``pypika`` undertaking, though.
+Also, we can make more queries use parameterised queries, cache SQL generation, and cache prepared queries.
 
 Perf fixes applied
 ------------------
@@ -172,3 +207,7 @@ Perf fixes applied
 9) **More optimal queryset cloning** *(generic)*
 
    (6-15% speedup for small fetch operations) https://github.com/tortoise/tortoise-orm/pull/64
+
+10) **``pypika`` improved copy implementation** *(generic)*
+
+    (10-15% speedup for small fetch operations) https://github.com/kayak/pypika/pull/205
