@@ -6,3 +6,4 @@ sqlobject
 tortoise-orm
 vmprof
 uvloop
+tox

@@ -110,16 +110,32 @@ Results (SQLite)
 
 Results for SQLite, using the ``SHM`` in-memory filesystem on Linux, to try and make the tests more CPU limited, but still do FS round-trips. Also more consistent than an SSD.
 
+Py37:
+
 ==================== ========== ========== ========== ============== ========== ============ =====================
 \                    Django     peewee     Pony ORM   SQLAlchemy ORM SQLObject  Tortoise ORM Tortoise ORM (uvloop)
 ==================== ========== ========== ========== ============== ========== ============ =====================
-Insert                  5491.01    5754.88    7020.89        2093.09    3981.55      7217.68               9870.59
-Insert: atomic          9124.65    7942.45   27388.15       12126.29    5040.19     12060.34              18452.56
-Insert: bulk           41762.54   43011.31          —       50059.31          —            —                     —
-Filter: match          79831.26   46908.29  241415.95       96177.74   24888.37    184709.55             186298.75
-Filter: contains       77758.16   45635.78  236241.52       89189.57   21633.57    181256.64             177623.78
-Filter: limit 20       33939.17   29080.69  411642.13       38656.97   27887.70     57385.63              65742.82
-Get                     3173.50    3700.66   11553.29        3192.85    6775.69      4013.92               4899.04
+Insert                  5526.83    5632.66    6858.63        2111.93    3990.65      5558.07               9246.40
+Insert: atomic          9431.61    7640.52   25721.32       12374.40    5105.79     11303.02              18543.12
+Insert: bulk           41509.31   39876.75          —       51301.89          —            —                     —
+Filter: match          80317.84   41085.14  212202.75       94813.36   24331.14    167020.00             176608.22
+Filter: contains       78813.05   45324.49  213845.25       90550.79   22045.91    166909.31             173972.69
+Filter: limit 20       33429.54   29555.49  394840.60       38743.17   27212.64     54455.10              61512.45
+Get                     3148.45    3863.86   10583.61        3177.36    6804.16      3738.46               4566.33
+==================== ========== ========== ========== ============== ========== ============ =====================
+
+PyPy7.0-Py3.5:
+
+==================== ========== ========== ========== ============== ========== ============ =====================
+\                    Django     peewee     Pony ORM   SQLAlchemy ORM SQLObject  Tortoise ORM Tortoise ORM (uvloop)
+==================== ========== ========== ========== ============== ========== ============ =====================
+Insert                  4412.35    5404.36    7591.06        1114.80          —      2946.12               2866.43
+Insert: atomic          6558.47    7505.67   24290.22        8741.84          —     14268.02              10056.14
+Insert: bulk           18208.38   37460.78          —       25931.92          —            —                     —
+Filter: match         157681.98   99918.28  342668.26       96394.91          —     50896.36              50816.38
+Filter: contains      161073.25  101175.23  347632.04      109365.11          —     52693.18              52445.68
+Filter: limit 20        6496.08   60953.55  563802.67       44450.58          —     25446.42              24254.46
+Get                     4010.55    5824.89    9160.72        2529.05          —      3945.98               2937.19
 ==================== ========== ========== ========== ============== ========== ============ =====================
 
 Quick analysis
@@ -129,6 +145,14 @@ Quick analysis
 * Tortoise ORM is now competitive, especially when using ``uvloop``
 * Generally ``uvloop`` provides a modest perf increase.
 * ``Get`` is surprisingly slow
+
+PyPy comparison
+---------------
+* ``peewee`` and ``Pony ORM`` has typically same or better performance
+* ``Django`` and ``SQLAlchemy ORM`` has some better, and some worse performance
+* ``Tortoise ORM`` performs worse in every metric, ``uvloop`` is even worse (as expected)
+* ``SQLObject`` fails
+
 
 Performance of Tortoise
 =======================
@@ -164,8 +188,8 @@ The majority of time is spent doing type conversion/cleanup: ``field_object.to_p
 This is something that is correct, so I deem it fine as is, and we don't try to make it run any faster right now.
 Besides, we are second fastest for these metrics.
 
-On Queryset performace
-^^^^^^^^^^^^^^^^^^^^^^
+On Queryset performance
+^^^^^^^^^^^^^^^^^^^^^^^
 Since pypika is immutable, and our Queryset object is as well, we need tests to guarantee our immutability.
 Then we can aggresively cache querysets.
 
