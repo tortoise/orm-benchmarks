@@ -16,7 +16,8 @@ peewee/bench.sh | tee -a outfile
 pony/bench.sh | tee -a outfile
 sqlalchemy/bench.sh | tee -a outfile
 sqlobject/bench.sh | tee -a outfile
-tortoise/bench.sh | tee -a outfile
+CONCURRENTS=1 tortoise/bench.sh | tee -a outfile
+CONCURRENTS=10 tortoise/bench.sh | tee -a outfile
 
 cat outfile | ./present.py
 

@@ -1,16 +1,18 @@
 #!/usr/bin/env python
+import os
 try:
     import os
 
-    loopstr = ''
+    loopstr = f" C{os.environ.get('CONCURRENTS', '1')}"
     if os.environ.get('UVLOOP', ''):
         import asyncio
         import uvloop
 
         asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
-        loopstr = ' (uvloop)'
+        loopstr = f" C{os.environ.get('CONCURRENTS', '1')} uvloop"
 finally:
     pass
+
 
 import test_a
 import test_b
