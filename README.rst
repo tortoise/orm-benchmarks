@@ -173,20 +173,28 @@ Filter: limit 20            4583.53         27830.14         29995.23         39
 Get                          233.69          1868.15          2136.20          2818.41          4411.01          4899.04
 ==================== ============== ================ ================ ================ ================ ================
 
-Perf issues identified
-----------------------
+Perf issues identified from profiling
+-------------------------------------
 * No bulk insert operations
-* Limit filter is much slower than large filters (seems DB limited, except for Pony ORM — suspect cacheing)
-* Get operation is slow (likely slow SQL generation)
 * ``base.executor._field_to_db()`` could be replaced with a pre-computed dict lookup
+* ``Model.__init__`` is 72% of large queries, and 28% of small queries
+* ``Queryset.resolve_filters`` is doing lots of unnecessary stuff, especially for .get() method
+* Get operation is slow (likely slow SQL generation, could be resolved with parametrized query cacheing)
+
 
 On ``tortoise.models.__init__``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 ``Model.__init__`` is 72% of large queries, and 28% of small queries
 
-The majority of time is spent doing type conversion/cleanup: ``field_object.to_python_value(value)``.
-This is something that is correct, so I deem it fine as is, and we don't try to make it run any faster right now.
-Besides, we are second fastest for these metrics.
+The majority of time is spent doing:
+
+* dynamic kwarg handling control flow
+* Defaults
+* Type conversion/cleanup: ``field_object.to_python_value(value)``.
+
+On doing some experiments, optimal hand-written code should be in the realm of 90% faster, so code-generation can fix a lot of this. (Not that interested in doing codegen at this stage)
+
+Another experiment indicate a 10-20% speedup by pre-generating a closure lookup for type handlers.
 
 On Queryset performance
 ^^^^^^^^^^^^^^^^^^^^^^^
