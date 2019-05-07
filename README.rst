@@ -192,9 +192,17 @@ The majority of time is spent doing:
 * Defaults
 * Type conversion/cleanup: ``field_object.to_python_value(value)``.
 
-On doing some experiments, optimal hand-written code should be in the realm of 90% faster, so code-generation can fix a lot of this. (Not that interested in doing codegen at this stage)
+An experiment indicate a ~10% speedup by pre-generating a closure lookup for type handlers.
 
-Another experiment indicate a 10-20% speedup by pre-generating a closure lookup for type handlers.
+Another experiment indicate a ~20% speedup on by skipping ``field_object.to_python_value(value)``
+
+Another experiment with optimal hand-written code gave a ~90% speedup, but there are several issues wit code-generation:
+
+* Error handling should only be done on parameters that are given
+* Can generate a function to call to pass parameters in to
+* Can't reliably introspect wether to use to_python_value or not
+
+Taking that into account brings effective speedup down to a less impressive ~50%
 
 On Queryset performance
 ^^^^^^^^^^^^^^^^^^^^^^^
