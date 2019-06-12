@@ -16,6 +16,7 @@ finally:
 
 import test_a
 import test_b
+import test_c
 import test_d
 import test_e
 import test_f
@@ -44,6 +45,7 @@ async def run_benchmarks():
     await create_db()
     await test_a.runtest(loopstr)
     await test_b.runtest(loopstr)
+    await test_c.runtest(loopstr)
     await test_d.runtest(loopstr)
     await test_e.runtest(loopstr)
     await test_f.runtest(loopstr)
