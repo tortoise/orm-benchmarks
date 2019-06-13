@@ -115,13 +115,13 @@ Py37:
 ==================== ========== ========== ========== ============== ========== ============ ===================
 \                    Django     peewee     Pony ORM   SQLAlchemy ORM SQLObject  Tortoise ORM Tortoise ORM uvloop
 ==================== ========== ========== ========== ============== ========== ============ ===================
-Insert                  6096.54    5567.38    6629.28        2031.94    3890.37      7773.51            11681.84
-Insert: atomic          9102.63    7621.95   25885.30       11648.78    5095.08     11509.20            18117.62
-Insert: bulk           40751.11   44117.32          —       49612.54          —     35678.08            35512.36
+Insert                  6096.54    5567.38    6629.28        2031.94    3890.37      9601.11            14544.81
+Insert: atomic          9102.63    7621.95   25885.30       11648.78    5095.08     11200.85            18245.26
+Insert: bulk           40751.11   44117.32          —       49612.54          —     70439.35            71124.01
 Filter: match          79577.49   47714.15  212520.15       97404.62   24395.18    157730.67           160746.73
 Filter: contains       76722.77   46687.24  212038.77       90807.11   21869.13    155694.69           159116.08
-Filter: limit 20       30425.03   29780.43  380113.10       37435.44   27569.99     54482.84            59440.83
-Get                     3004.42    3730.01   10255.34        3024.80    6661.08      3902.89             4672.36
+Filter: limit 20       30425.03   29780.43  380113.10       37435.44   27569.99     54482.84            60285.42
+Get                     3004.42    3730.01   10255.34        3024.80    6661.08      3902.89             5208.50
 ==================== ========== ========== ========== ============== ========== ============ ===================
 
 PyPy7.1-Py3.6:
@@ -163,15 +163,15 @@ Versions
 ==================== ============== ================ ================ ================ ================ ================ ================
 Tortoise ORM:        v0.10.6        v0.10.7          v0.10.8          v0.10.9          v0.10.11         v0.11.3          v0.12.1
 -------------------- -------------- ---------------- ---------------- ---------------- ---------------- ---------------- ----------------
-Seedup (Insert & Big & Small)         19.4, 1.5, 6.1  25.9, 2.0, 6.6    81.8, 2.2, 8.7  95.3, 2.4, 13.1 118.2, 2.7, 14.6 124.4, 2.4, 13.3
+Seedup (Insert & Big & Small)         19.4, 1.5, 6.1  25.9, 2.0, 6.6    81.8, 2.2, 8.7  95.3, 2.4, 13.1 118.2, 2.7, 14.6 136.9, 2.4, 13.5
 =================================== ================ ================ ================ ================ ================ ================
-Insert                        89.89          2180.38          2933.19          7635.42          8297.53          9870.59         11681.84
-Insert: atomic               149.59          2481.16          3275.53         11966.53         14791.36         18452.56         18117.62
-Insert: bulk                      —                —                —                —                —                —         35512.36
+Insert                        89.89          2180.38          2933.19          7635.42          8297.53          9870.59         14544.81
+Insert: atomic               149.59          2481.16          3275.53         11966.53         14791.36         18452.56         18245.26
+Insert: bulk                      —                —                —                —                —                —         71124.01
 Filter: match              55866.14        101035.06        139482.12        158997.41        165398.56        186298.75        160746.73
 Filter: contains           76803.14        100536.06        128669.50        142954.66        167127.12        177623.78        159116.08
-Filter: limit 20            4583.53         27830.14         29995.23         39170.17         58740.05         65742.82         59440.83
-Get                          233.69          1868.15          2136.20          2818.41          4411.01          4899.04          4672.36
+Filter: limit 20            4583.53         27830.14         29995.23         39170.17         58740.05         65742.82         60285.42
+Get                          233.69          1868.15          2136.20          2818.41          4411.01          4899.04          5208.50
 ==================== ============== ================ ================ ================ ================ ================ ================
 
 Perf issues identified from profiling
@@ -204,6 +204,12 @@ Another experiment with optimal hand-written code gave a ~90% speedup, but there
 * Can't reliably introspect wether to use to_python_value or not
 
 Taking that into account brings effective speedup down to a less impressive ~50%
+
+On Bulk inserts
+^^^^^^^^^^^^^^^
+Bulk inserts is noticeably faster if inside a transaction.
+We can't safely force a transaction around the entire bulk operation, so leave it as is until we have a safe chunking operation.
+
 
 On Queryset performance
 ^^^^^^^^^^^^^^^^^^^^^^^
@@ -253,10 +259,10 @@ Perf fixes applied
 
     (10-15% speedup for small fetch operations) https://github.com/kayak/pypika/pull/205
 
-11) **Slightly optimised inserts/updates** *(generic)*
+11) **Optimised inserts/updates** *(generic)*
 
-    (7-20% speedup for small insert operations)
+    (5-40% speedup for small insert operations)
 
 12) **Bulk create operation** *(generic)*
 
-    (200-300% speedup for insertion over previous fastest options)
+    (350-600% speedup for insertion over previous fastest options)
