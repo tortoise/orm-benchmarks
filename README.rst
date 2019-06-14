@@ -126,17 +126,17 @@ Get                     3004.42    3730.01   10255.34        3024.80    6661.08 
 
 PyPy7.1-Py3.6:
 
-==================== ========== ========== ========== ============== ========== ============ ===================
-\                    Django     peewee     Pony ORM   SQLAlchemy ORM SQLObject  Tortoise ORM Tortoise ORM uvloop
-==================== ========== ========== ========== ============== ========== ============ ===================
-Insert                  4971.68    5147.30    6471.84        1028.24          —      5181.86             4456.60
-Insert: atomic          6473.55    6951.05   18413.70        5190.44          —     22524.02            15503.36
-Insert: bulk           16417.14   23258.11          —       21007.28          —     52656.01            45617.68
-Filter: match         150553.61  102095.82  343349.34      137057.37          —     79956.52            78056.82
-Filter: contains      151636.21  103850.39  327011.67      153616.11          —     84676.95            77976.81
-Filter: limit 20        6681.54   75810.61  609542.94       77564.35          —     51016.86            49637.01
-Get                     4247.98    8722.43    9638.61        4671.68          —      7590.22             6342.50
-==================== ========== ========== ========== ============== ========== ============ ===================
+==================== ========== ========== ========== ============== ========== ============
+\                    Django     peewee     Pony ORM   SQLAlchemy ORM SQLObject  Tortoise ORM
+==================== ========== ========== ========== ============== ========== ============
+Insert                  4971.68    5147.30    6471.84        1028.24          —      5181.86
+Insert: atomic          6473.55    6951.05   18413.70        5190.44          —     22524.02
+Insert: bulk           16417.14   23258.11          —       21007.28          —     52656.01
+Filter: match         150553.61  102095.82  343349.34      137057.37          —     79956.52
+Filter: contains      151636.21  103850.39  327011.67      153616.11          —     84676.95
+Filter: limit 20        6681.54   75810.61  609542.94       77564.35          —     51016.86
+Get                     4247.98    8722.43    9638.61        4671.68          —      7590.22
+==================== ========== ========== ========== ============== ========== ============
 
 Quick analysis
 --------------
@@ -150,7 +150,7 @@ PyPy comparison
 ---------------
 * ``peewee`` and ``Pony ORM`` has typically same or better performance
 * ``Django`` and ``SQLAlchemy ORM`` has some better, and some worse performance
-* ``Tortoise ORM`` has performace wins for atomic inserts and get operations, is significantly slower for large filters. ``uvloop`` performs worse across the board as expected.
+* ``Tortoise ORM`` has performace wins for atomic inserts and get operations, is significantly slower for large filters.
 * ``SQLObject`` fails
 
 
@@ -161,7 +161,7 @@ Versions
 --------
 
 ==================== ============== ================ ================ ================ ================ ================ ================
-Tortoise ORM:        v0.10.6        v0.10.7          v0.10.8          v0.10.9          v0.10.11         v0.11.3          v0.12.1
+Tortoise ORM:        v0.10.6        v0.10.7          v0.10.8          v0.10.9          v0.10.11         v0.11.3          v0.12.2
 -------------------- -------------- ---------------- ---------------- ---------------- ---------------- ---------------- ----------------
 Seedup (Insert & Big & Small)         19.4, 1.5, 6.1  25.9, 2.0, 6.6    81.8, 2.2, 8.7  95.3, 2.4, 13.1 118.2, 2.7, 14.6 136.9, 2.4, 13.5
 =================================== ================ ================ ================ ================ ================ ================
@@ -221,21 +221,21 @@ Also, we can make more queries use parameterised queries, cache SQL generation, 
 Perf fixes applied
 ------------------
 
-1) **``aiosqlite`` polling misalignment** *(sqlite specific)*
+1) ``aiosqlite`` **polling misalignment** *(sqlite specific)*
 
    (20-40% speedup for retrieval, **10-15X** speedup for insertion): https://github.com/jreese/aiosqlite/pull/12
-2) **``pypika`` improved copy implementation** *(generic)*
+2) ``pypika`` **improved copy implementation** *(generic)*
 
    (53% speedup for insertion): https://github.com/kayak/pypika/issues/160
-3) **``tortoise.models.__init__`` restructure** *(generic)*
+3) ``tortoise.models.__init__`` **restructure** *(generic)*
 
    (25-30% speedup for retrieval) https://github.com/tortoise/tortoise-orm/pull/51
 
-4) **``tortoise.models.__init__`` restructure** *(generic)*
+4) ``tortoise.models.__init__`` **restructure** *(generic)*
 
    (9-11% speedup for retrieval) https://github.com/tortoise/tortoise-orm/pull/52
 
-5) **``aiosqlite`` macros** *(sqlite specific)*
+5) ``aiosqlite`` **macros** *(sqlite specific)*
 
    (1-5% speedup for retrieval, 10-40% speedup for insertion) https://github.com/jreese/aiosqlite/pull/13
 
@@ -255,14 +255,11 @@ Perf fixes applied
 
    (6-15% speedup for small fetch operations) https://github.com/tortoise/tortoise-orm/pull/64
 
-10) **``pypika`` improved copy implementation** *(generic)*
+10) ``pypika`` **improved copy implementation** *(generic)*
 
     (10-15% speedup for small fetch operations) https://github.com/kayak/pypika/pull/205
 
-11) **Optimised inserts/updates** *(generic)*
+11) **Optimised inserts/updates & Bulk create** *(generic)*
 
-    (5-40% speedup for small insert operations)
-
-12) **Bulk create operation** *(generic)*
-
-    (350-600% speedup for insertion over previous fastest options)
+    | (5-40% speedup for small insert operations)
+    | (350-600% speedup for bulk insert over small insert operations) https://github.com/tortoise/tortoise-orm/pull/142
