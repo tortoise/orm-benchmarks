@@ -10,26 +10,28 @@ certifi==2019.3.9         # via requests
 chardet==3.0.4            # via requests
 ciso8601==2.1.1           # via tortoise-orm
 colorama==0.4.1           # via vmprof
-django==2.2.1
-filelock==3.0.10          # via tox
+django==2.2.2
+filelock==3.0.12          # via tox
 formencode==1.3.1         # via sqlobject
 idna==2.8                 # via requests
-peewee==3.9.5
-pluggy==0.9.0             # via tox
+importlib-metadata==0.18  # via pluggy
+peewee==3.9.6
+pluggy==0.12.0            # via tox
 pony==0.7.10
 py==1.8.0                 # via tox
 pydispatcher==2.0.5       # via sqlobject
-pypika==0.27.0            # via tortoise-orm
+pypika==0.28.0            # via tortoise-orm
 pytz==2019.1              # via django, vmprof
-requests==2.21.0          # via vmprof
+requests==2.22.0          # via vmprof
 six==1.12.0               # via tox, vmprof
-sqlalchemy==1.3.3
+sqlalchemy==1.3.4
 sqlobject==3.7.2
 sqlparse==0.3.0           # via django
 toml==0.10.0              # via tox
-tortoise-orm==0.11.10
-tox==3.9.0
-urllib3==1.24.3           # via requests
+tortoise-orm==0.12.1
+tox==3.12.1
+urllib3==1.25.3           # via requests
 uvloop==0.12.2
-virtualenv==16.5.0        # via tox
-vmprof==0.4.12
+virtualenv==16.6.0        # via tox
+vmprof==0.4.15
+zipp==0.5.1               # via importlib-metadata
