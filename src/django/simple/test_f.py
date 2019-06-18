@@ -6,6 +6,7 @@ finally:
 
 import os
 import time
+from random import randrange
 
 from simple.models import Journal
 
@@ -18,7 +19,8 @@ count = 0
 
 for _ in range(10):
     for level in LEVEL_CHOICE:
-        res = list(Journal.objects.filter(level=level).all()[:20])
+        offset = randrange(int(iters/10))
+        res = list(Journal.objects.filter(level=level).all()[offset: 20 + offset])
         count += len(res)
 
 now = time.time()

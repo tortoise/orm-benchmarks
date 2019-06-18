@@ -1,5 +1,6 @@
 import os
 import time
+from random import randrange
 
 from models import Journal
 from pony.orm import db_session, select
@@ -14,7 +15,7 @@ count = 0
 with db_session():
     for _ in range(iters):
         for level in LEVEL_CHOICE:
-            res = list(select(j for j in Journal if j.level == level).limit(20))
+            res = list(select(j for j in Journal if j.level == level).limit(20, randrange(int(iters/10))))
             count += len(res)
 
 now = time.time()

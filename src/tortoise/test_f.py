@@ -1,5 +1,6 @@
 import os
 import time
+from random import randrange
 
 from models import Journal
 
@@ -13,7 +14,7 @@ async def runtest(loopstr):
 
     for _ in range(iters):
         for level in LEVEL_CHOICE:
-            res = list(await Journal.filter(level=level).limit(20))
+            res = list(await Journal.filter(level=level).limit(20).offset(randrange(int(iters/10))))
             count += len(res)
 
     now = time.time()
