@@ -7,8 +7,8 @@ db = Database()
 
 class Journal(db.Entity):
     timestamp = Required(datetime, default=datetime.now)
-    level = Required(int, size=16)
-    text = Required(str, max_len=255)
+    level = Required(int, size=16, index=True)
+    text = Required(str, max_len=255, index=True)
 
 
 db.bind(provider='sqlite', filename='/dev/shm/db.sqlite3', create_db=True)
