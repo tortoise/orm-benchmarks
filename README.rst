@@ -115,13 +115,13 @@ Py37:
 ==================== ========== ========== ========== ============== ========== ============ ===================
 \                    Django     peewee     Pony ORM   SQLAlchemy ORM SQLObject  Tortoise ORM Tortoise ORM uvloop
 ==================== ========== ========== ========== ============== ========== ============ ===================
-Insert                  6065.39    5645.60    6569.83        2017.10    4145.39     10095.88            12829.76
-Insert: atomic          8955.16    7826.12   22403.12       10703.60    5089.01     11271.42            17360.36
-Insert: bulk           39260.08   46031.46          —       39850.07          —     50276.71            49200.51
-Filter: match          80254.33   46599.65  203517.93       90011.55   24144.28    195661.91           199982.61
-Filter: contains       74707.72   44711.45  205796.17       75697.45   21823.63    174481.15           176206.19
-Filter: limit 20       31246.21   28035.28  145659.47       33633.12   27496.05     49838.14            54722.05
-Get                     3176.05    3627.38   10115.00        2762.78    6668.08      3895.93             4758.92
+Insert                  6065.39    5645.60    6569.83        2017.10    4145.39      9445.11            12676.38
+Insert: atomic          8955.16    7826.12   22403.12       10703.60    5089.01     11239.76            16842.46
+Insert: bulk           39260.08   46031.46          —       39850.07          —     49730.13            49549.42
+Filter: match          80254.33   46599.65  203517.93       90011.55   24144.28    198338.13           203177.29
+Filter: contains       74707.72   44711.45  205796.17       75697.45   21823.63    163602.56           175470.91
+Filter: limit 20       31246.21   28035.28  145659.47       33633.12   27496.05     51232.62            59410.67
+Get                     3176.05    3627.38   10115.00        2762.78    6668.08      4447.95             6240.35
 ==================== ========== ========== ========== ============== ========== ============ ===================
 
 PyPy7.1-Py3.6:
@@ -267,6 +267,6 @@ Perf fixes applied
     | (5-40% speedup for small insert operations)
     | (350-600% speedup for bulk insert over small insert operations) https://github.com/tortoise/tortoise-orm/pull/142
 
-12) **De-lazied some metadata objects** *(generic)*
+12) **De-lazied some metadata objects & More efficient queryset manipulation** *(generic)*
 
-    (15-25% speedup for large fetch operations)
+    (15-25% speedup for large fetch operations, 5-30% speedup for small fetches) https://github.com/tortoise/tortoise-orm/pull/158
