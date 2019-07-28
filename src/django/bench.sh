@@ -19,14 +19,11 @@ python -m simple.test_c
 # Test D → Filter on level
 python -m simple.test_d
 
-# Test E → Search in text
+# Test E → Filter limit 20
 python -m simple.test_e
 
-# Test F → Filter limit 20
+# Test F → Get
 python -m simple.test_f
-
-# Test G → Get
-python -m simple.test_g
 
 # teardown DB
 rm -f /dev/shm/db.sqlite3

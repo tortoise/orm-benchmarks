@@ -17,29 +17,77 @@ Benchmarks:
 These benchmarks are not meant to be used as a direct comparison.
 They suffer from co-operative back-off, and is a lot simpler than common real-world scenarios.
 
-1) Single table
----------------
+Tests:
+------
+
+A. Insert: Single (single entry at a time)
+B. Insert: Batch (many batched in a transaction)
+C. Insert: Bulk (using bulk insert operations)
+D. Filter: Large (a large result set)
+E. Filter: Small (a limit 20 with random offset)
+F. Get
+G. Filter: dict
+H. Filter: tuple
+I. Update: Whole (update the whole object)
+J. Update: Partial (update only a single field of the whole object)
+
+
+1) Small table, no relations
+----------------------------
 
 .. code::
 
     model Journal:
+        id: autonumber primary key
         timestamp: datetime → now()
-        level: int(enum) → 10/20/30/40/50
-        text: varchar(255) → A selection of text
+        level: small int(enum) → 10/20/30/40/50 (indexed)
+        text: varchar(255) → A selection of text (indexed)
 
-A. Insert rows (naïve implementation)
-B. Insert rows (transactioned)
-C. Inster rows (batch)
-D. Filter on level
-E. Search in text
-F. Filter with limit 20 with random offset
-G. Get
+        parent: FK to parent BigTree
+        child: reverse-FB to parent BigTree
+        knows: M2M to BigTree
 
 
-2) Relational
--------------
+2) Small table, with relations
+------------------------------
+
+.. code::
+
+    model Journal:
+        id: autonumber primary key
+        timestamp: datetime → now()
+        level: small int(enum) → 10/20/30/40/50 (indexed)
+        text: varchar(255) → A selection of text (indexed)
+
+        parent: FK to parent BigTree
+        child: reverse-FB to parent BigTree
+        knows: M2M to BigTree
+
+
+3) Large table
+--------------
 TODO
 
+.. code::
+
+    model BigTree:
+        id: uuid primary key
+        created_at: datetime → initial-now()
+        updated_at: datetime → always-now()
+
+        # Repeated 4 times:
+        col_float: double
+        col_smallint: small integer
+        col_int: integer
+        col_bigint: big integer
+        col_char: char(255)
+        col_text: text
+        col_decimal: decimal(11,5)
+        col_json: jsonb/text
+
+        parent: FK to parent BigTree
+        child: reverse-FB to parent BigTree
+        knows: M2M to BigTree
 
 
 ORMs:
@@ -103,7 +151,8 @@ Tortoise ORM:
         https://github.com/tortoise/tortoise-orm
 
         * Currently the only ``async`` ORM as part of this suite.
-        * Does not support bulk insert.
+        * Disclaimer: I'm an active contributor to this project
+
 
 Results (SQLite)
 ================
@@ -112,31 +161,56 @@ Results for SQLite, using the ``SHM`` in-memory filesystem on Linux, to try and 
 
 Py37:
 
-==================== ========== ========== ========== ============== ========== ============ ===================
-\                    Django     peewee     Pony ORM   SQLAlchemy ORM SQLObject  Tortoise ORM Tortoise ORM uvloop
-==================== ========== ========== ========== ============== ========== ============ ===================
-Insert                  6065.39    5645.60    6569.83        2017.10    4145.39      9445.11            12676.38
-Insert: atomic          8955.16    7826.12   22403.12       10703.60    5089.01     11239.76            16842.46
-Insert: bulk           39260.08   46031.46          —       39850.07          —     49730.13            49549.42
-Filter: match          80254.33   46599.65  203517.93       90011.55   24144.28    198338.13           203177.29
-Filter: contains       74707.72   44711.45  205796.17       75697.45   21823.63    163602.56           175470.91
-Filter: limit 20       31246.21   28035.28  145659.47       33633.12   27496.05     51232.62            59410.67
-Get                     3176.05    3627.38   10115.00        2762.78    6668.08      4447.95             6240.35
-==================== ========== ========== ========== ============== ========== ============ ===================
+=============== ========== ========== ========== ============== ========== ============ ===================
+Test 1          Django     peewee     Pony ORM   SQLAlchemy ORM SQLObject  Tortoise ORM Tortoise ORM uvloop
+=============== ========== ========== ========== ============== ========== ============ ===================
+Insert: Single     6390.24    5743.26    6463.95        2065.41    4123.84     10333.15            14193.50
+Insert: Batch      9029.35    7807.47   22587.28       10867.30    5027.93     11734.36            17966.94
+Insert: Bulk      39332.80   46178.48          —       39922.48          —     50680.51            50138.71
+Filter: Large     81727.74   47963.46  206233.62       90592.36   23969.76    214594.03           214014.97
+Filter: Small     31519.53   26512.42  146404.94       33308.60   27107.13     54605.96            59730.19
+Get                3152.05    3610.11   10631.40        2729.88    6688.61      4605.15             6351.89
+Geometric Mean    16252.19   14554.53   34211.61        13953.7    9793.88     26309.09            31820.94
+=============== ========== ========== ========== ============== ========== ============ ===================
+
+=============== ========== ========== ========== ============== ========== ============ ===================
+Test 2          Django     peewee     Pony ORM   SQLAlchemy ORM SQLObject  Tortoise ORM Tortoise ORM uvloop
+=============== ========== ========== ========== ============== ========== ============ ===================
+Insert: Single     5883.16    5715.60    5497.81        1704.02    3932.74      9161.12            10552.79
+Insert: Batch      8461.01    7820.74   14669.27        8238.69    4811.14     11028.60            15344.16
+Insert: Bulk      34526.90   45496.15          —       38682.31          —     38804.67            38571.47
+Filter: Large     77993.08   42061.39  193503.88       85708.69   23312.59     80459.16            80848.47
+Filter: Small     30327.58   25509.58  141691.99       30947.10   26013.39     40434.73            43710.84
+Get                2964.92    3158.91   10427.47        2468.57    6344.56      4029.26             6001.20
+Geometric Mean    15141.99   13795.41   29686.73       12354.43    9384.83     19281.97            22577.68
+=============== ========== ========== ========== ============== ========== ============ ===================
 
 PyPy7.1-Py3.6:
 
-===================== ========== ========== ========== ============== ========== ============
-\/                    Django     peewee     Pony ORM   SQLAlchemy ORM SQLObject  Tortoise ORM
-===================== ========== ========== ========== ============== ========== ============
-Insert                  5242.25    5451.37    5791.86        1107.91           —     4424.47
-Insert: atomic          6722.83    7296.33   19042.90        6942.59           —    19522.18
-Insert: bulk           17553.11   24769.06          —       21125.83           —    36688.70
-Filter: match         154524.56  105543.11  340737.29      135703.08           —    84318.87
-Filter: contains      146560.45  101398.30  368628.43      142638.19           —    82642.94
-Filter: limit 20        6835.82   73438.98  197140.48       65193.73           —    41425.38
-Get                     4411.47    7846.75    9847.32        4481.98           —     8163.20
-===================== ========== ========== ========== ============== ========== ============
+=============== ========== ========== ========== ============== ========== ============
+Test 1          Django     peewee     Pony ORM   SQLAlchemy ORM SQLObject  Tortoise ORM
+=============== ========== ========== ========== ============== ========== ============
+Insert: Single     5415.72    5613.33    6904.24        1112.58          —      4931.75
+Insert: Batch      7167.78    7449.19   19825.62        7382.89          —     21504.18
+Insert: Bulk      17715.83   25835.71          —       22498.22          —     40387.83
+Filter: Large    156627.29  107906.51  363226.86      141041.60          —     88282.51
+Filter: Small      7168.62   73377.52  207428.51       69599.54          —     46738.71
+Get                4474.82    8749.60   10057.28        4845.78          —      9668.67
+Geometric Mean    12295.52   20528.54   40102.73       14366.04          —     23556.75
+=============== ========== ========== ========== ============== ========== ============
+
+=============== ========== ========== ========== ============== ========== ============
+Test 2          Django     peewee     Pony ORM   SQLAlchemy ORM SQLObject  Tortoise ORM
+=============== ========== ========== ========== ============== ========== ============
+Insert: Single     5591.11    5631.66    6423.44        1027.04          —      4589.07
+Insert: Batch      6623.02    7181.15   16900.64        6675.27          —     14295.10
+Insert: Bulk      17056.88   25140.69          —       15192.33          —     37646.72
+Filter: Large    150158.40  102043.30  366218.65       81213.71          —     65448.46
+Filter: Small      6693.76   68008.21  196044.53       58909.49          —     38897.13
+Get                4364.26    8532.03   10095.11        4421.60          —      5995.81
+Geometric Mean    11851.25   19797.07   37946.82        11407.2          —     18311.22
+=============== ========== ========== ========== ============== ========== ============
+
 
 Quick analysis
 --------------
@@ -148,9 +222,9 @@ Quick analysis
 
 PyPy comparison
 ---------------
-* ``peewee`` and ``Pony ORM`` has typically same or better performance
-* ``Django`` and ``SQLAlchemy ORM`` has some better, and some worse performance
-* ``Tortoise ORM`` has performace wins for atomic inserts and get operations, is significantly slower for large filters.
+* ``peewee`` and ``Pony ORM`` gets a noticeable performance improvement
+* ``SQLAlchemy ORM`` is marginally faster
+* ``Django`` and ``Tortoise ORM`` is typically slower
 * ``SQLObject`` fails
 
 
@@ -226,7 +300,7 @@ Perf fixes applied
 
 1) ``aiosqlite`` **polling misalignment** *(sqlite specific)*
 
-   (20-40% speedup for retrieval, **10-15X** speedup for insertion): https://github.com/jreese/aiosqlite/pull/12
+   (20-40% speedup for retrieval, **10× — 15×** speedup for insertion): https://github.com/jreese/aiosqlite/pull/12
 2) ``pypika`` **improved copy implementation** *(generic)*
 
    (53% speedup for insertion): https://github.com/kayak/pypika/issues/160
@@ -269,4 +343,5 @@ Perf fixes applied
 
 12) **De-lazied some metadata objects & More efficient queryset manipulation** *(generic)*
 
-    (15-25% speedup for large fetch operations, 5-30% speedup for small fetches) https://github.com/tortoise/tortoise-orm/pull/158
+    | (15-25% speedup for large fetch operations)
+    | (5-30% speedup for small fetches) https://github.com/tortoise/tortoise-orm/pull/158

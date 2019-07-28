@@ -2,14 +2,21 @@
 import os
 try:
     import os
+    concurrents = int(os.environ.get('CONCURRENTS', '1'))
 
-    loopstr = f" C{os.environ.get('CONCURRENTS', '1')}"
+    if concurrents > 1:
+        loopstr = f" C{concurrents}"
+    else:
+        loopstr = ""
     if os.environ.get('UVLOOP', ''):
         import asyncio
         import uvloop
 
         asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
-        loopstr = f" C{os.environ.get('CONCURRENTS', '1')} uvloop"
+        if concurrents > 1:
+            loopstr = f" C{concurrents} uvloop"
+        else:
+            loopstr = f" uvloop"
 finally:
     pass
 
@@ -20,7 +27,6 @@ import test_c
 import test_d
 import test_e
 import test_f
-import test_g
 
 from tortoise import Tortoise, run_async
 
@@ -49,7 +55,6 @@ async def run_benchmarks():
     await test_d.runtest(loopstr)
     await test_e.runtest(loopstr)
     await test_f.runtest(loopstr)
-    await test_g.runtest(loopstr)
 
 
 run_async(run_benchmarks())

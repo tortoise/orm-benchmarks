@@ -1,20 +1,19 @@
 import os
 import time
-from random import randrange
+from random import randint
 
 from models import Journal
 
 LEVEL_CHOICE = [10, 20, 30, 40, 50]
-iters = int(os.environ.get('ITERATIONS', '1000')) // 2
+count = int(os.environ.get('ITERATIONS', '1000'))
+maxval = count - 1
+count *= 2
 start = time.time()
 
 
-count = 0
-
-for _ in range(iters):
-    for level in LEVEL_CHOICE:
-        res = list(Journal.select().where(Journal.level == level).limit(20).offset(randrange(int(iters/10))))
-        count += len(res)
+for _ in range(count):
+    val = randint(1, maxval)
+    Journal.get(Journal.id == val)
 
 now = time.time()
 

@@ -107,5 +107,5 @@ ENV/
 # SQLitte
 *.sqlite
 *.sqlite3
-outfile
+outfile*
 

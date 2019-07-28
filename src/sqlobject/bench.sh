@@ -18,14 +18,11 @@ python -m test_b
 # Test D → Filter on level
 python -m test_d
 
-# Test E → Search in text
+# Test E → Filter limit 20
 python -m test_e
 
-# Test F → Filter limit 20
+# Test F → Get
 python -m test_f
-
-# Test G → Get
-python -m test_g
 
 # teardown DB
 rm -f /dev/shm/db.sqlite3

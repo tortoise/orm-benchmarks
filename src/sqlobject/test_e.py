@@ -1,14 +1,17 @@
+import os
 import time
 
 from models import Journal
-from sqlobject.sqlbuilder import CONTAINSSTRING
+
+LEVEL_CHOICE = [10, 20, 30, 40, 50]
+iters = int(os.environ.get('ITERATIONS', '1000')) // 2
 
 start = time.time()
 count = 0
 
-for _ in range(10):
-    for level in ['A', 'B', 'C']:
-        res = list(Journal.select(CONTAINSSTRING(Journal.q.text, f'from {level},')))
+for _ in range(iters):
+    for level in LEVEL_CHOICE:
+        res = list(Journal.select(Journal.q.level == level).limit(20))
         count += len(res)
 
 now = time.time()

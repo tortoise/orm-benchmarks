@@ -9,16 +9,33 @@ cd $(dirname $0)
 
 echo Iterations: $ITERATIONS
 
-printf '' > outfile
 
-django/bench.sh | tee -a outfile
-peewee/bench.sh | tee -a outfile
-pony/bench.sh | tee -a outfile
-sqlalchemy/bench.sh | tee -a outfile
-sqlobject/bench.sh | tee -a outfile
-CONCURRENTS=1 tortoise/bench.sh | tee -a outfile
-CONCURRENTS=10 tortoise/bench.sh | tee -a outfile
+echo Test 1
+export TEST=1
+printf '' > outfile1
 
-cat outfile | ./present.py
+django/bench.sh | tee -a outfile1
+peewee/bench.sh | tee -a outfile1
+pony/bench.sh | tee -a outfile1
+sqlalchemy/bench.sh | tee -a outfile1
+sqlobject/bench.sh | tee -a outfile1
+CONCURRENTS=1 tortoise/bench.sh | tee -a outfile1
+#CONCURRENTS=10 tortoise/bench.sh | tee -a outfile1
 
-rm -f outfile
+
+echo Test 2
+export TEST=2
+printf '' > outfile2
+
+django/bench.sh | tee -a outfile2
+peewee/bench.sh | tee -a outfile2
+pony/bench.sh | tee -a outfile2
+sqlalchemy/bench.sh | tee -a outfile2
+sqlobject/bench.sh | tee -a outfile2
+CONCURRENTS=1 tortoise/bench.sh | tee -a outfile2
+#CONCURRENTS=10 tortoise/bench.sh | tee -a outfile2
+
+
+cat outfile1 | ./present.py "Test 1"
+cat outfile2 | ./present.py "Test 2"
+
