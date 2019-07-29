@@ -1,4 +1,5 @@
 django
+django_jsonfield
 sqlalchemy
 peewee
 pony

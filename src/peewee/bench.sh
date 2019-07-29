@@ -24,6 +24,12 @@ python -m test_e
 # Test F → Get
 python -m test_f
 
+# Test G → dict
+python -m test_g
+
+# Test H → tuple
+python -m test_h
+
 # teardown DB
 rm -f /dev/shm/db.sqlite3
 

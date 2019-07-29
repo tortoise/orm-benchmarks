@@ -36,6 +36,20 @@ CONCURRENTS=1 tortoise/bench.sh | tee -a outfile2
 #CONCURRENTS=10 tortoise/bench.sh | tee -a outfile2
 
 
+echo Test 3
+export TEST=3
+printf '' > outfile3
+
+django/bench.sh | tee -a outfile3
+peewee/bench.sh | tee -a outfile3
+pony/bench.sh | tee -a outfile3
+sqlalchemy/bench.sh | tee -a outfile3
+sqlobject/bench.sh | tee -a outfile3
+CONCURRENTS=1 tortoise/bench.sh | tee -a outfile3
+#CONCURRENTS=10 tortoise/bench.sh | tee -a outfile3
+
+
 cat outfile1 | ./present.py "Test 1"
 cat outfile2 | ./present.py "Test 2"
+cat outfile3 | ./present.py "Test 3"
 

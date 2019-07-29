@@ -43,10 +43,6 @@ J. Update: Partial (update only a single field of the whole object)
         level: small int(enum) → 10/20/30/40/50 (indexed)
         text: varchar(255) → A selection of text (indexed)
 
-        parent: FK to parent BigTree
-        child: reverse-FB to parent BigTree
-        knows: M2M to BigTree
-
 
 2) Small table, with relations
 ------------------------------
@@ -66,7 +62,6 @@ J. Update: Partial (update only a single field of the whole object)
 
 3) Large table
 --------------
-TODO
 
 .. code::
 
@@ -74,20 +69,18 @@ TODO
         id: uuid primary key
         created_at: datetime → initial-now()
         updated_at: datetime → always-now()
+        level: small int(enum) → 10/20/30/40/50 (indexed)
+        text: varchar(255) → A selection of text (indexed)
 
-        # Repeated 4 times:
+        # Repeated 2 times with defaults, another 2 times as optional:
         col_float: double
         col_smallint: small integer
         col_int: integer
         col_bigint: big integer
         col_char: char(255)
         col_text: text
-        col_decimal: decimal(11,5)
-        col_json: jsonb/text
-
-        parent: FK to parent BigTree
-        child: reverse-FB to parent BigTree
-        knows: M2M to BigTree
+        col_decimal: decimal(12,8)
+        col_json: json
 
 
 ORMs:
@@ -131,7 +124,7 @@ SQLAlchemy ORM:
 
         * The "de facto" ORM in the python world
         * Supports just about every feature and edge case
-        * Documentation re DB quirks is second to none
+        * Documentation re DB quirks is excellent
 
         Cons:
 
@@ -164,25 +157,43 @@ Py37:
 =============== ========== ========== ========== ============== ========== ============ ===================
 Test 1          Django     peewee     Pony ORM   SQLAlchemy ORM SQLObject  Tortoise ORM Tortoise ORM uvloop
 =============== ========== ========== ========== ============== ========== ============ ===================
-Insert: Single     6390.24    5743.26    6463.95        2065.41    4123.84     10333.15            14193.50
-Insert: Batch      9029.35    7807.47   22587.28       10867.30    5027.93     11734.36            17966.94
-Insert: Bulk      39332.80   46178.48          —       39922.48          —     50680.51            50138.71
-Filter: Large     81727.74   47963.46  206233.62       90592.36   23969.76    214594.03           214014.97
-Filter: Small     31519.53   26512.42  146404.94       33308.60   27107.13     54605.96            59730.19
-Get                3152.05    3610.11   10631.40        2729.88    6688.61      4605.15             6351.89
-Geometric Mean    16252.19   14554.53   34211.61        13953.7    9793.88     26309.09            31820.94
+Insert: Single     5902.96    6729.79    6564.09        1966.68    4388.27      9502.66            13451.39
+Insert: Batch      8968.97    7878.45   21587.19       11150.29    5838.65     11563.44            16365.33
+Insert: Bulk      36559.00   46980.79          —       41358.64          —     42118.67            42523.49
+Filter: Large     78692.53   48608.18  193511.07      109352.06   31111.09    188146.13           185547.35
+Filter: Small     30390.64   29010.34  146658.19       33438.96   30142.26     56556.38            62717.91
+Get                3117.85    3693.86   10580.70        2729.89    7066.42      4804.15             5731.58
+Filter: dict     114025.02   66926.04  110210.53      104402.15          —    284824.97           269132.47
+Filter: tuple    117270.27   64482.48  196292.70      301219.73          —    249166.57           260534.66
+Geometric Mean    25744.85   22055.54   51185.43       27027.16   11116.79     44991.82            50717.65
 =============== ========== ========== ========== ============== ========== ============ ===================
 
 =============== ========== ========== ========== ============== ========== ============ ===================
 Test 2          Django     peewee     Pony ORM   SQLAlchemy ORM SQLObject  Tortoise ORM Tortoise ORM uvloop
 =============== ========== ========== ========== ============== ========== ============ ===================
-Insert: Single     5883.16    5715.60    5497.81        1704.02    3932.74      9161.12            10552.79
-Insert: Batch      8461.01    7820.74   14669.27        8238.69    4811.14     11028.60            15344.16
-Insert: Bulk      34526.90   45496.15          —       38682.31          —     38804.67            38571.47
-Filter: Large     77993.08   42061.39  193503.88       85708.69   23312.59     80459.16            80848.47
-Filter: Small     30327.58   25509.58  141691.99       30947.10   26013.39     40434.73            43710.84
-Get                2964.92    3158.91   10427.47        2468.57    6344.56      4029.26             6001.20
-Geometric Mean    15141.99   13795.41   29686.73       12354.43    9384.83     19281.97            22577.68
+Insert: Single     5791.08    6836.05    5545.92        1701.60    4174.84      8724.74            11790.66
+Insert: Batch      8233.39    7665.60   14834.60        8180.82    5363.24      8640.71            13892.06
+Insert: Bulk      32232.39   44417.07          —       35292.22          —     35565.14            34493.20
+Filter: Large     76745.34   41445.46  182188.36      110694.33   30906.33     94442.62            83646.52
+Filter: Small     31186.50   26783.92  141036.40       31477.07   30519.12     41207.13            45078.59
+Get                2976.04    3506.07   10162.39        2433.03    6554.99      4102.38             5550.33
+Filter: dict     110399.08   61479.14   97916.88       98848.75          —    252362.33           248556.75
+Filter: tuple    116082.27   60871.94  173681.86      270774.37          —    245079.33           231620.73
+Geometric Mean    24738.73   20714.63   44855.49       24037.95   10672.14      35715.3             40190.4
+=============== ========== ========== ========== ============== ========== ============ ===================
+
+=============== ========== ========== ========== ============== ========== ============ ===================
+Test 3          Django     peewee     Pony ORM   SQLAlchemy ORM SQLObject  Tortoise ORM Tortoise ORM uvloop
+=============== ========== ========== ========== ============== ========== ============ ===================
+Insert: Single     2785.98    2679.04    3122.53        1508.36    2207.47      5467.87             5899.52
+Insert: Batch      3142.70    2953.07    5435.05        4798.55    2442.02      6930.99             7695.11
+Insert: Bulk       5639.51    7717.35          —       17810.89          —     13519.89            13018.03
+Filter: Large     27023.84   15443.11   52896.37       32408.48   14719.62     20613.19            20702.13
+Filter: Small     13743.26    9785.87   65430.19       12482.12   13156.73     16321.28            16294.95
+Get                1416.11    1191.17    6016.59         969.66    3746.98      2448.24             2120.24
+Filter: dict      33871.91   24352.62   21784.59       28137.71          —     34971.98            34456.33
+Filter: tuple     38806.95   25551.99   52348.90       49423.66          —     37268.89            36431.95
+Geometric Mean      8742.8    7151.13   16956.32        9569.44    5229.67     12375.16            12319.63
 =============== ========== ========== ========== ============== ========== ============ ===================
 
 PyPy7.1-Py3.6:

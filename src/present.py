@@ -10,6 +10,8 @@ DESC = {
     'D': 'Filter:\xa0Large',
     'E': 'Filter:\xa0Small',
     'F': 'Get',
+    'G': 'Filter:\xa0dict',
+    'H': 'Filter:\xa0tuple',
 
     'gm': 'Geometric Mean',
 }
@@ -24,11 +26,14 @@ data = {}
 tests = {'gm'}
 
 for bench in vals:
-    orm = bench.split(',')[0].strip()
-    test = bench.split(',')[1].split(':')[0].strip()
-    ops = bench.split(':')[2].strip()
-    data.setdefault(orm, {})[test] = ops
-    tests.add(test)
+    try:
+        test = bench.split(',')[1].split(':')[0].strip()
+        orm = bench.split(',')[0].strip()
+        ops = bench.split(':')[2].strip()
+        data.setdefault(orm, {})[test] = ops
+        tests.add(test)
+    except IndexError:
+        pass
 
 tests = sorted(list(tests))
 
