@@ -6,10 +6,8 @@ from peewee import CharField, DateTimeField, Model, SmallIntegerField, ForeignKe
 from playhouse.sqlite_ext import JSONField, SqliteExtDatabase
 
 db = SqliteExtDatabase('/dev/shm/db.sqlite3', pragmas=(
-    ('cache_size', -1024 * 64),  # 64MB page-cache.
     ('journal_mode', 'wal'),  # Use WAL-mode (you should always use this!).
-    ('foreign_keys', 1))  # Enforce foreign-key constraints.
-)
+))
 
 test = int(os.environ.get('TEST', '1'))
 if test == 1:
