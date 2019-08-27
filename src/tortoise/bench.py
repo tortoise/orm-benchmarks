@@ -27,6 +27,7 @@ import test_g
 import test_h
 import test_i
 import test_j
+import test_k
 
 from tortoise import Tortoise, run_async
 
@@ -59,6 +60,7 @@ async def run_benchmarks():
     await test_h.runtest(loopstr)
     await test_i.runtest(loopstr)
     await test_j.runtest(loopstr)
+    await test_k.runtest(loopstr)
 
 
 run_async(run_benchmarks())

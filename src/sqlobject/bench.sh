@@ -30,6 +30,9 @@ python -m test_i
 # Test I → Update full
 python -m test_j
 
+# Test K → Delete
+python -m test_k
+
 # teardown DB
 rm -f /dev/shm/db.sqlite3
 

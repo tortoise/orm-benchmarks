@@ -14,6 +14,7 @@ DESC = {
     'H': 'Filter:\xa0tuple',
     'I': 'Update:\xa0Whole',
     'J': 'Update:\xa0Partial',
+    'K': 'Delete',
 
     'gm': 'Geometric Mean',
 }

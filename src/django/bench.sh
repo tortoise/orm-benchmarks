@@ -37,6 +37,9 @@ python -m simple.test_i
 # Test J → Update partial
 python -m simple.test_j
 
+# Test K → Delete
+python -m simple.test_k
+
 # teardown DB
 rm -f /dev/shm/db.sqlite3
 
