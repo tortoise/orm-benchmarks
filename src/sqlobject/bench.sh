@@ -24,6 +24,12 @@ python -m test_e
 # Test F → Get
 python -m test_f
 
+# Test I → Update full
+python -m test_i
+
+# Test I → Update full
+python -m test_j
+
 # teardown DB
 rm -f /dev/shm/db.sqlite3
 

@@ -30,6 +30,12 @@ python -m test_g
 # Test H → tuple
 python -m test_h
 
+# Test I → Update full
+python -m test_i
+
+# Test J → Update partial
+python -m test_j
+
 # teardown DB
 rm -f /dev/shm/db.sqlite3
 

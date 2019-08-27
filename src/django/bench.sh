@@ -25,11 +25,17 @@ python -m simple.test_e
 # Test F → Get
 python -m simple.test_f
 
-# Test D → dict
+# Test G → dict
 python -m simple.test_g
 
-# Test D → tuple
+# Test H → tuple
 python -m simple.test_h
+
+# Test I → Update full
+python -m simple.test_i
+
+# Test J → Update partial
+python -m simple.test_j
 
 # teardown DB
 rm -f /dev/shm/db.sqlite3

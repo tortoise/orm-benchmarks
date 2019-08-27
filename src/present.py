@@ -12,6 +12,8 @@ DESC = {
     'F': 'Get',
     'G': 'Filter:\xa0dict',
     'H': 'Filter:\xa0tuple',
+    'I': 'Update:\xa0Whole',
+    'J': 'Update:\xa0Partial',
 
     'gm': 'Geometric Mean',
 }

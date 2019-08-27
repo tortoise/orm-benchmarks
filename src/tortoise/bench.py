@@ -13,10 +13,6 @@ try:
         import uvloop
 
         asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
-        if concurrents > 1:
-            loopstr = f" C{concurrents} uvloop"
-        else:
-            loopstr = f" uvloop"
 finally:
     pass
 
@@ -29,6 +25,8 @@ import test_e
 import test_f
 import test_g
 import test_h
+import test_i
+import test_j
 
 from tortoise import Tortoise, run_async
 
@@ -59,6 +57,8 @@ async def run_benchmarks():
     await test_f.runtest(loopstr)
     await test_g.runtest(loopstr)
     await test_h.runtest(loopstr)
+    await test_i.runtest(loopstr)
+    await test_j.runtest(loopstr)
 
 
 run_async(run_benchmarks())
