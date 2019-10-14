@@ -25,8 +25,6 @@ if test == 3:
         timestamp = fields.DatetimeField(auto_now_add=True)
         level = fields.SmallIntField(index=True)
         text = fields.CharField(max_length=255, index=True)
-        parent = fields.ForeignKeyField('models.Journal', related_name='children', null=True)
-        related = fields.ManyToManyField('models.Journal', related_name='related_from')
 
         col_float1 = fields.FloatField(default=2.2)
         col_smallint1 = fields.SmallIntField(default=2)

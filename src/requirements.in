@@ -8,3 +8,4 @@ tortoise-orm
 vmprof
 uvloop
 tox
+python-rapidjson
