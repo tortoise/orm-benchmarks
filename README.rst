@@ -207,57 +207,57 @@ Geometric Mean     6994.09    6484.86   18820.22        11314.2    6575.42     1
 =============== ========== ========== ========== ============== ========== ============
 
 
-PyPy7.1-Py3.6:
+PyPy7.2-Py3.6:
 
 =============== ========== ========== ========== ============== ============
 Test 1          Django     peewee     Pony ORM   SQLAlchemy ORM Tortoise ORM
 =============== ========== ========== ========== ============== ============
-Insert: Single     5100.06    5382.76    5821.95         850.12      4073.14
-Insert: Batch      6085.54    5795.74   16253.72        6723.15     17022.11
-Insert: Bulk      15433.46   20533.54          —       17157.52     35640.39
-Filter: Large    137513.37   91247.73  295651.16      112271.85     73931.75
-Filter: Small      5938.01   68236.34  181106.78       50010.01     35448.50
-Get                3422.89    7695.80    8606.52        3872.18      7302.07
-Filter: dict     124002.51  104283.60  213993.03      101032.31     77670.27
-Filter: tuple    146486.98  115928.94  333009.32      194792.29    102366.01
-Update: Whole      6776.48   17727.31   38186.83       21819.21      5938.21
-Update: Partial    7811.37   21461.86   50689.33       35892.04      8789.32
-Delete             8330.27   26346.55   64110.59       73565.18     11283.21
-Geometric Mean    15295.94   26031.61   57361.16       25031.38     20142.36
+Insert: Single     4844.65    5699.46    6069.36         928.29      4602.28
+Insert: Batch      6623.80    5942.15   14888.52        6750.90     21913.57
+Insert: Bulk      15833.01   19876.12          —       19456.28     35732.64
+Filter: Large    145843.64   96627.96  212065.79      110034.60     82509.28
+Filter: Small      4867.78   61654.60  172243.99       56155.40     37690.85
+Get                3538.23    7448.17    5911.03        4175.23      7216.67
+Filter: dict     142764.62  109864.27  131992.03      121185.63     86464.33
+Filter: tuple    143723.62  106352.47  206592.66      263009.74    114269.08
+Update: Whole      6448.56   14572.05   19806.92       23459.62     21227.50
+Update: Partial    7320.68   20191.26   32069.98       40098.96     31612.84
+Delete             8583.36   29682.59   73035.62       83364.88     32051.25
+Geometric Mean    15281.28   25564.53   43575.11       27864.52     29917.64
 =============== ========== ========== ========== ============== ============
 
 =============== ========== ========== ========== ============== ============
 Test 2          Django     peewee     Pony ORM   SQLAlchemy ORM Tortoise ORM
 =============== ========== ========== ========== ============== ============
-Insert: Single     4614.75    5067.40    5408.42         768.09      3900.72
-Insert: Batch      6187.52    5865.57   13889.78        5255.67     16263.25
-Insert: Bulk      15047.94   20948.41          —       18065.37     29301.21
-Filter: Large    119424.47   87229.47  292587.76      106208.97     56582.93
-Filter: Small      4921.75   64822.41  168048.53       49482.60     30196.86
-Get                3547.09    7387.87    8473.93        3832.67      5788.82
-Filter: dict     119909.32  106676.99  224871.30       96005.86     66080.11
-Filter: tuple    138177.10  118731.74  328496.49      187744.75     91382.99
-Update: Whole      6532.66   16871.93   33912.03       16715.71      4836.89
-Update: Partial    7240.48   22744.50   40385.16       24061.22      9781.47
-Delete             2280.56   31114.15   36869.58         605.89     10363.30
-Geometric Mean    12867.44   26164.25   50900.85       14605.57     17730.31
+Insert: Single     4856.53    6099.71    6302.97         886.47      4224.78
+Insert: Batch      6388.57    5979.01   14255.97        4636.63     14709.41
+Insert: Bulk      15675.79   18751.54          —       17444.69     37092.82
+Filter: Large    130201.72   86533.17  311024.40      110243.82     67828.80
+Filter: Small      3845.09   65312.52  183754.86       47955.16     35296.59
+Get                3540.29    7934.10    9121.36        4233.04      5888.39
+Filter: dict     138333.47  105259.77  237840.16      119919.30     66525.03
+Filter: tuple    155187.72   89280.79  335520.30      260503.32     99152.44
+Update: Whole      6693.48   13079.63   37170.20       18749.98     17175.61
+Update: Partial    7609.05   17583.81   47285.79       27172.58     24171.52
+Delete             2339.78   36752.54   41859.66         655.36     12826.34
+Geometric Mean    13247.47   25048.86    55454.4       15927.71     23380.74
 =============== ========== ========== ========== ============== ============
 
 =============== ========== ========== ========== ============== ============
 Test 3          Django     peewee     Pony ORM   SQLAlchemy ORM Tortoise ORM
 =============== ========== ========== ========== ============== ============
-Insert: Single     2487.11    3357.77    3591.84         685.06      2787.74
-Insert: Batch      2866.41    3566.03    6855.89        4374.36      7146.71
-Insert: Bulk       4540.41    7654.51          —       13363.68     13210.44
-Filter: Large     22633.88   28656.02  115716.11       31701.85      2711.80
-Filter: Small      1864.65   22945.16   99144.99       21644.99      2358.22
-Get                2074.13    4210.58    7032.85        1948.50      1234.74
-Filter: dict      24740.76   33379.94   79424.08       25089.98      2778.87
-Filter: tuple     26859.81   39489.67  107007.57       43747.41      8675.65
-Update: Whole      3876.02    6431.08   27576.05       12200.27      1224.01
-Update: Partial    6446.09   17087.90   31143.89       14992.91      5617.92
-Delete             7804.06   26761.37   49095.95       66105.89      7779.73
-Geometric Mean      6006.5   12310.04   30566.76       11951.53      3840.44
+Insert: Single     1965.02    3519.71    4207.43         670.29      3294.88
+Insert: Batch      1904.72    3493.31    7636.38        4421.69      8557.21
+Insert: Bulk       4054.34    7156.34          —       13786.11     17747.40
+Filter: Large     20301.33   29613.15  122365.02       38721.68      2934.91
+Filter: Small      1908.01   26244.67  105406.30       24031.37      2634.84
+Get                2111.95    4936.50    6633.01        2315.14      1354.96
+Filter: dict      28415.33   39443.07   75871.80       28089.40      3113.37
+Filter: tuple     26695.73   39080.83  125314.67       58677.38     10182.81
+Update: Whole      4072.91    5559.29   27090.75       11341.40      9704.97
+Update: Partial    7782.08   20601.30   37512.08       14907.51     30243.79
+Delete             9303.80   26078.32   59424.56       63702.66     34440.70
+Geometric Mean     5855.94   12832.73   33099.23       12839.01      6897.17
 =============== ========== ========== ========== ============== ============
 
 
@@ -274,7 +274,8 @@ PyPy comparison
 ---------------
 * ``peewee`` and ``Pony ORM`` gets a noticeable performance improvement
 * ``SQLAlchemy ORM`` is marginally faster
-* ``Django`` and ``Tortoise ORM`` is typically slower
+* ``Django`` is marginally slower
+* ``Tortoise ORM`` is notably slower, but notably faster for Updates & Deletes
 * ``SQLObject`` fails
 
 
@@ -303,34 +304,10 @@ Get                          233.69          1868.15          2136.20          2
 
 Perf issues identified from profiling
 -------------------------------------
-* No bulk insert operations
 * ``base.executor._field_to_db()`` could be replaced with a pre-computed dict lookup
-* ``Model.__init__`` is 72% of large queries, and 28% of small queries
 * ``Queryset.resolve_filters`` is doing lots of unnecessary stuff, especially for .get() method
 * Get operation is slow (likely slow SQL generation, could be resolved with parametrized query cacheing)
 
-
-On ``tortoise.models.__init__``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-``Model.__init__`` is 72% of large queries, and 28% of small queries
-
-The majority of time is spent doing:
-
-* dynamic kwarg handling control flow
-* Defaults
-* Type conversion/cleanup: ``field_object.to_python_value(value)``.
-
-An experiment indicate a ~10% speedup by pre-generating a closure lookup for type handlers.
-
-Another experiment indicate a ~20% speedup on by skipping ``field_object.to_python_value(value)``
-
-Another experiment with optimal hand-written code gave a ~90% speedup, but there are several issues wit code-generation:
-
-* Error handling should only be done on parameters that are given
-* Can generate a function to call to pass parameters in to
-* Can't reliably introspect wether to use to_python_value or not
-
-Taking that into account brings effective speedup down to a less impressive ~50%
 
 On Bulk inserts
 ^^^^^^^^^^^^^^^
@@ -344,6 +321,9 @@ Since pypika is immutable, and our Queryset object is as well, we need tests to 
 Then we can aggresively cache querysets.
 
 Also, we can make more queries use parameterised queries, cache SQL generation, and cache prepared queries.
+
+It seems in cases where we can avoid using PyPika (and use prepared statements), PyPy performance increase is even larger than CPython.
+
 
 Perf fixes applied
 ------------------
