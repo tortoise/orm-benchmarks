@@ -8,7 +8,7 @@ from models import Journal
 from tortoise.transactions import in_transaction
 
 LEVEL_CHOICE = [10, 20, 30, 40, 50]
-concurrents = 1  # int(os.environ.get('CONCURRENTS', '1'))
+concurrents = int(os.environ.get('CONCURRENTS', '1'))
 count = int(os.environ.get('ITERATIONS', '1000'))
 count = int(count // concurrents) * concurrents
 
