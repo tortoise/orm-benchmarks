@@ -68,5 +68,13 @@ if test == 3:
         col_decimal4 = Optional(Decimal, 12, 8)
         col_json4 = Optional(Json)
 
-db.bind(provider='sqlite', filename='/dev/shm/db.sqlite3', create_db=True)
+
+dbtype = os.environ.get('DBTYPE', '')
+if dbtype == 'postgres':
+    db.bind(provider='postgres', user='postgres', password=None, host='127.0.0.1', database='tbench')
+elif dbtype == 'mysql':
+    db.bind(provider='mysql', host='127.0.0.1', user='root', passwd='', db='tbench')
+else:
+    db.bind(provider='sqlite', filename='/dev/shm/db.sqlite3', create_db=True)
+
 db.generate_mapping(create_tables=True)

@@ -16,6 +16,14 @@ try:
 finally:
     pass
 
+dbtype = os.environ.get('DBTYPE', '')
+if dbtype == 'postgres':
+    db_url = f'postgres://postgres:@127.0.0.1:5432/tbench?minsize={concurrents}&maxsize={concurrents}'
+elif dbtype == 'mysql':
+    db_url = f'mysql://root:@127.0.0.1:3306/tbench?minsize={concurrents}&maxsize={concurrents}'
+else:
+    db_url = 'sqlite:///dev/shm/db.sqlite3'
+
 
 import test_a
 import test_b
@@ -37,7 +45,7 @@ async def init():
     #  also specify the app name of "models"
     #  which contain models from "app.models"
     await Tortoise.init(
-        db_url='sqlite:///dev/shm/db.sqlite3',
+        db_url=db_url,
         modules={'models': ['models']}
     )
 

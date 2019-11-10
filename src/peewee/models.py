@@ -1,13 +1,32 @@
 import os
+import json
 from datetime import datetime
 from decimal import Decimal
 
-from peewee import CharField, DateTimeField, Model, SmallIntegerField, ForeignKeyField, FloatField, IntegerField, BigIntegerField, TextField, DecimalField
-from playhouse.sqlite_ext import JSONField, SqliteExtDatabase
+from peewee import CharField, DateTimeField, Model, SmallIntegerField, ForeignKeyField, FloatField, IntegerField, BigIntegerField, TextField, DecimalField, MySQLDatabase
+from playhouse.sqlite_ext import SqliteExtDatabase
+from playhouse.postgres_ext import PostgresqlExtDatabase
 
-db = SqliteExtDatabase('/dev/shm/db.sqlite3', pragmas=(
-    ('journal_mode', 'wal'),  # Use WAL-mode (you should always use this!).
-))
+
+dbtype = os.environ.get('DBTYPE', '')
+if dbtype == 'postgres':
+    db = PostgresqlExtDatabase('tbench', user='postgres')
+elif dbtype == 'mysql':
+    db = MySQLDatabase('tbench', user='root')
+else:
+    db = SqliteExtDatabase('/dev/shm/db.sqlite3', pragmas=(
+        ('journal_mode', 'wal'),  # Use WAL-mode (you should always use this!).
+    ))
+
+
+class JSONField(TextField):
+    def db_value(self, value):
+        return json.dumps(value)
+
+    def python_value(self, value):
+        if value is not None:
+            return json.loads(value)
+
 
 test = int(os.environ.get('TEST', '1'))
 if test == 1:

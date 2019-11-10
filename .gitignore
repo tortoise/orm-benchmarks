@@ -109,3 +109,4 @@ ENV/
 *.sqlite3
 outfile*
 
+src/results

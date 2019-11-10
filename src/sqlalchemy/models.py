@@ -6,7 +6,13 @@ from sqlalchemy import Column, DateTime, Integer, SmallInteger, String, create_e
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
-engine = create_engine('sqlite:////dev/shm/db.sqlite3')
+dbtype = os.environ.get('DBTYPE', '')
+if dbtype == 'postgres':
+    engine = create_engine("postgresql://postgres:@localhost/tbench")
+elif dbtype == 'mysql':
+    engine = create_engine("mysql://root:@localhost/tbench")
+else:
+    engine = create_engine('sqlite:////dev/shm/db.sqlite3')
 
 Base = declarative_base()
 

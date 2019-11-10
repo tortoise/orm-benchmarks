@@ -3,8 +3,8 @@
 cd $(dirname $0)
 
 # setup DB
-rm -f /dev/shm/db.sqlite3
-PYTHONPATH="." sqlobject-admin create -m models --create-db
+../db.sh
+PYTHONPATH="." sqlobject-admin create -m models
 
 # Test A → Insert
 python -m test_a
@@ -32,7 +32,3 @@ python -m test_j
 
 # Test K → Delete
 python -m test_k
-
-# teardown DB
-rm -f /dev/shm/db.sqlite3
-

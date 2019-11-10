@@ -1,3 +1,4 @@
+# ORM's
 django
 django_jsonfield
 sqlalchemy
@@ -5,7 +6,16 @@ peewee
 pony
 sqlobject
 tortoise-orm
-vmprof
+
+# DB drivers
+asyncpg
+aiomysql
+mysqlclient
+psycopg2
+
+# Recommended accelerators
 uvloop
+
+# Testing tools
+vmprof
 tox
-python-rapidjson

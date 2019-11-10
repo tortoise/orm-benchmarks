@@ -5,7 +5,13 @@ from decimal import Decimal
 from sqlobject import (DatabaseIndex, DateTimeCol, IntCol, SQLObject, connectionForURI,
                        sqlhub, ForeignKey, RelatedJoin, MultipleJoin, FloatCol, UnicodeCol, DecimalCol, JSONCol)
 
-conn = sqlhub.processConnection = connectionForURI('sqlite:/dev/shm/db.sqlite3')
+dbtype = os.environ.get('DBTYPE', '')
+if dbtype == 'postgres':
+    conn = sqlhub.processConnection = connectionForURI('postgres://postgres@localhost/tbench')
+elif dbtype == 'mysql':
+    conn = sqlhub.processConnection = connectionForURI('mysql://root:@localhost/tbench')
+else:
+    conn = sqlhub.processConnection = connectionForURI('sqlite:/dev/shm/db.sqlite3')
 
 test = int(os.environ.get('TEST', '1'))
 if test == 1:

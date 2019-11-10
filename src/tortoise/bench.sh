@@ -5,7 +5,7 @@ cd $(dirname $0)
 PYPY=`python -V | grep PyPy`
 
 # setup DB
-rm -f /dev/shm/db.sqlite3
+../db.sh
 
 if [ -z "$PYPY" ]
 then
@@ -15,6 +15,3 @@ else
     # run regular loop benchmarks
     PYTHONUNBUFFERED=x python -m bench
 fi
-
-# teardown DB
-rm -f /dev/shm/db.sqlite3
