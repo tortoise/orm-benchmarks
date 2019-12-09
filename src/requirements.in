@@ -1,6 +1,6 @@
 # ORM's
-django
-django_jsonfield
+django<3
+django_jsonfield  # Requires django<3
 sqlalchemy
 peewee
 pony
@@ -15,7 +15,9 @@ psycopg2
 
 # Recommended accelerators
 uvloop
+python-rapidjson
 
 # Testing tools
 vmprof
+py-spy
 tox

@@ -5,24 +5,28 @@ import asyncio
 from random import choice
 from tortoise.transactions import in_transaction
 
-
 LEVEL_CHOICE = [10, 20, 30, 40, 50]
 concurrents = int(os.environ.get('CONCURRENTS', '1'))
 
-async def runtest(loopstr):
-    inrange = 10 // concurrents
-    if inrange < 1:
-        inrange = 1
 
-    objs = list(await Journal.all())
-    count = len(objs)
-
-    start = now = time.time()
-
+async def _runtest(objs) -> int:
     async with in_transaction():
         for obj in objs:
             obj.level = choice(LEVEL_CHOICE)
             await obj.save(update_fields=["level"])
+
+    return len(objs)
+
+
+async def runtest(loopstr):
+    objs = list(await Journal.all())
+    inrange = len(objs) // concurrents
+    if inrange < 1:
+        inrange = 1
+
+    start = now = time.time()
+
+    count = sum(await asyncio.gather(*[_runtest(objs[i*inrange:((i+1)*inrange) - 1]) for i in range(concurrents)]))
 
     now = time.time()
 

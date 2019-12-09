@@ -110,3 +110,4 @@ ENV/
 outfile*
 
 src/results
+src/results_all
