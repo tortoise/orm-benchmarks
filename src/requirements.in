@@ -1,6 +1,6 @@
 # ORM's
-django<3
-django_jsonfield  # Requires django<3
+django<4
+django_jsonfield  # Requires django<4
 sqlalchemy
 peewee
 pony
