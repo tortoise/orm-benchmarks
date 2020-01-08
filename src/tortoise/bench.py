@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import os
+import sys
 try:
-    import os
     concurrents = int(os.environ.get('CONCURRENTS', '1'))
 
     if concurrents > 1:
@@ -15,6 +15,9 @@ try:
         asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
 finally:
     pass
+
+if concurrents > 1 and sys.version_info < (3,7):
+    sys.exit()
 
 dbtype = os.environ.get('DBTYPE', '')
 if dbtype == 'postgres':

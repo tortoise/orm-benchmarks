@@ -1,6 +1,6 @@
 # ORM's
-django<3
-django_jsonfield  # Requires django<3
+django
+django_jsonfield
 sqlalchemy
 peewee
 pony
@@ -8,14 +8,14 @@ sqlobject
 tortoise-orm
 
 # DB drivers
-asyncpg
+asyncpg ; implementation_name == "cpython"
 aiomysql
 mysqlclient
 psycopg2
 
 # Recommended accelerators
-uvloop
-python-rapidjson
+uvloop ; sys_platform != "win32" and implementation_name == "cpython"
+python-rapidjson ; implementation_name == "cpython"
 
 # Testing tools
 vmprof

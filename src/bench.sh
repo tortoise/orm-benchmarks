@@ -4,6 +4,9 @@ export ITERATIONS=200
 if [ "x$1" == "xfull" ]; then
     export ITERATIONS=2000
 fi
+if [ "x$1" == "xextra" ]; then
+    export ITERATIONS=10000
+fi
 
 cd $(dirname $0)
 
