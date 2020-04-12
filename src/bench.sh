@@ -1,8 +1,8 @@
 #!/bin/sh
 
-export ITERATIONS=200
+export ITERATIONS=100
 if [ "x$1" == "xfull" ]; then
-    export ITERATIONS=2000
+    export ITERATIONS=1000
 fi
 if [ "x$1" == "xextra" ]; then
     export ITERATIONS=10000
@@ -22,8 +22,7 @@ peewee/bench.sh | tee -a outfile1
 pony/bench.sh | tee -a outfile1
 sqlalchemy/bench.sh | tee -a outfile1
 sqlobject/bench.sh | tee -a outfile1
-CONCURRENTS=1 tortoise/bench.sh | tee -a outfile1
-CONCURRENTS=10 tortoise/bench.sh | tee -a outfile1
+tortoise/bench.sh | tee -a outfile1
 
 
 echo Test 2
@@ -35,8 +34,7 @@ peewee/bench.sh | tee -a outfile2
 pony/bench.sh | tee -a outfile2
 sqlalchemy/bench.sh | tee -a outfile2
 sqlobject/bench.sh | tee -a outfile2
-CONCURRENTS=1 tortoise/bench.sh | tee -a outfile2
-CONCURRENTS=10 tortoise/bench.sh | tee -a outfile2
+tortoise/bench.sh | tee -a outfile2
 
 
 echo Test 3
@@ -48,8 +46,7 @@ peewee/bench.sh | tee -a outfile3
 pony/bench.sh | tee -a outfile3
 sqlalchemy/bench.sh | tee -a outfile3
 sqlobject/bench.sh | tee -a outfile3
-CONCURRENTS=1 tortoise/bench.sh | tee -a outfile3
-CONCURRENTS=10 tortoise/bench.sh | tee -a outfile3
+tortoise/bench.sh | tee -a outfile3
 
 echo `python -V`, Iterations: $ITERATIONS DBtype: $DBTYPE | tee -a results
 cat outfile1 | ./present.py "Test 1" | tee -a results

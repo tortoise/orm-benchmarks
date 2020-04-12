@@ -7,7 +7,7 @@ import asyncio
 from models import Journal
 
 LEVEL_CHOICE = [10, 20, 30, 40, 50]
-concurrents = int(os.environ.get('CONCURRENTS', '1'))
+concurrents = int(os.environ.get('CONCURRENTS', '10'))
 count = int(os.environ.get('ITERATIONS', '1000'))
 count = int(count // concurrents) * concurrents
 

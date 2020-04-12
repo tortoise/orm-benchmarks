@@ -4,7 +4,7 @@ from models import Journal
 import asyncio
 
 LEVEL_CHOICE = [10, 20, 30, 40, 50]
-concurrents = int(os.environ.get('CONCURRENTS', '1'))
+concurrents = int(os.environ.get('CONCURRENTS', '10'))
 
 
 async def _runtest(inrange) -> int:

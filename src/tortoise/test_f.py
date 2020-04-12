@@ -5,7 +5,7 @@ import asyncio
 
 from models import Journal
 
-concurrents = int(os.environ.get('CONCURRENTS', '1'))
+concurrents = int(os.environ.get('CONCURRENTS', '10'))
 count = int(os.environ.get('ITERATIONS', '1000'))
 maxval = count - 1
 count *= 2

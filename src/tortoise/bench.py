@@ -2,9 +2,9 @@
 import os
 import sys
 try:
-    concurrents = int(os.environ.get('CONCURRENTS', '1'))
+    concurrents = int(os.environ.get('CONCURRENTS', '10'))
 
-    if concurrents > 1:
+    if concurrents != 10:
         loopstr = f" C{concurrents}"
     else:
         loopstr = ""

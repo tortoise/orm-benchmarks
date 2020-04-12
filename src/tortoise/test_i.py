@@ -6,7 +6,7 @@ from random import choice
 from tortoise.transactions import in_transaction
 
 LEVEL_CHOICE = [10, 20, 30, 40, 50]
-concurrents = int(os.environ.get('CONCURRENTS', '1'))
+concurrents = int(os.environ.get('CONCURRENTS', '10'))
 
 
 async def _runtest(objs) -> int:
