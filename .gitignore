@@ -109,5 +109,5 @@ ENV/
 *.sqlite3
 outfile*
 
-src/results
-src/results_all
+benchmarks/results
+benchmarks/results_all
