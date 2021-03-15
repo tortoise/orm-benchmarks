@@ -85,12 +85,12 @@ if dbtype == "postgres":
     db.bind(
         provider="postgres",
         user="postgres",
-        password=None,
+        password=os.environ.get('PASSWORD'),
         host="127.0.0.1",
         database="tbench",
     )
 elif dbtype == "mysql":
-    db.bind(provider="mysql", host="127.0.0.1", user="root", passwd="", db="tbench")
+    db.bind(provider="mysql", host="127.0.0.1", user="root", passwd=os.environ.get('PASSWORD'), db="tbench")
 else:
     db.bind(provider="sqlite", filename="/dev/shm/db.sqlite3", create_db=True)
 

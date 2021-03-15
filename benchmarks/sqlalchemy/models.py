@@ -21,9 +21,9 @@ from sqlalchemy.orm import relationship
 
 dbtype = os.environ.get("DBTYPE", "")
 if dbtype == "postgres":
-    engine = create_engine("postgresql://postgres:@localhost/tbench")
+    engine = create_engine(f"postgresql://postgres:{os.environ.get('PASSWORD')}@localhost/tbench")
 elif dbtype == "mysql":
-    engine = create_engine("mysql://root:@localhost/tbench")
+    engine = create_engine(f"mysql://root:{os.environ.get('PASSWORD')}@localhost/tbench")
 else:
     engine = create_engine("sqlite:////dev/shm/db.sqlite3")
 

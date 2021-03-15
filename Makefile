@@ -15,7 +15,7 @@ style: deps
 check: deps
 	black --check $(black_opts) $(checkfiles) || (echo "Please run 'make style' to auto-fix style issues" && false)
 	flake8 $(checkfiles)
-	bandit -x tests,benchmark -r $(checkfiles)
+	bandit -r $(checkfiles)
 
 benchmark: deps
 	sh benchmarks/benchmark_all.sh

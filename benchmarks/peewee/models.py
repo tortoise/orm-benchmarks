@@ -22,9 +22,9 @@ from playhouse.postgres_ext import PostgresqlExtDatabase
 
 dbtype = os.environ.get("DBTYPE", "")
 if dbtype == "postgres":
-    db = PostgresqlExtDatabase("tbench", user="postgres")
+    db = PostgresqlExtDatabase("tbench", user="postgres",password=os.environ.get('PASSWORD'))
 elif dbtype == "mysql":
-    db = MySQLDatabase("tbench", user="root")
+    db = MySQLDatabase("tbench", user="root",password=os.environ.get('PASSWORD'))
 else:
     db = SqliteExtDatabase(
         "/dev/shm/db.sqlite3",

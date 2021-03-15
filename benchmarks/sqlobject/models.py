@@ -21,10 +21,10 @@ from sqlobject import (
 dbtype = os.environ.get("DBTYPE", "")
 if dbtype == "postgres":
     conn = sqlhub.processConnection = connectionForURI(
-        "postgres://postgres@localhost/tbench"
+        f"postgres://postgres@{os.environ.get('PASSWORD')}localhost/tbench"
     )
 elif dbtype == "mysql":
-    conn = sqlhub.processConnection = connectionForURI("mysql://root:@localhost/tbench")
+    conn = sqlhub.processConnection = connectionForURI(f"mysql://root:{os.environ.get('PASSWORD')}@localhost/tbench")
 else:
     conn = sqlhub.processConnection = connectionForURI("sqlite:/dev/shm/db.sqlite3")
 
