@@ -1,7 +1,6 @@
 #!/usr/bin/env python
-import sys
 import math
-
+import sys
 
 DESC = {
     "A": "Insert:\xa0Single",
@@ -51,9 +50,7 @@ for group in data.keys():
     data[group]["gm"] = gm
 
 lens = [max(len(text), 10) for text in groups]
-titles = [f"{sys.argv[1]:15}"] + [
-    f"{group:{_len}}" for group, _len in zip(groups, lens)
-]  # noqa
+titles = [f"{sys.argv[1]:15}"] + [f"{group:{_len}}" for group, _len in zip(groups, lens)]  # noqa
 
 print("")
 print(" ".join(["=" * len(text) for text in titles]))

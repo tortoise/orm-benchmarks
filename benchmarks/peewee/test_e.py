@@ -14,10 +14,7 @@ count = 0
 for _ in range(iters // 10):
     for level in LEVEL_CHOICE:
         res = list(
-            Journal.select()
-            .where(Journal.level == level)
-            .limit(20)
-            .offset(randrange(iters - 20))
+            Journal.select().where(Journal.level == level).limit(20).offset(randrange(iters - 20))
         )
         count += len(res)
 

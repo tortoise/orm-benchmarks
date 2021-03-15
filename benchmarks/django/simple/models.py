@@ -31,15 +31,9 @@ class Journal3(models.Model):
     col_int1 = models.IntegerField(default=2000000)
     col_bigint1 = models.BigIntegerField(default=99999999)
     col_char1 = models.CharField(max_length=255, default="value1")
-    col_text1 = models.TextField(
-        default="Moo,Foo,Baa,Waa,Moo,Foo,Baa,Waa,Moo,Foo,Baa,Waa"
-    )
-    col_decimal1 = models.DecimalField(
-        max_digits=12, decimal_places=8, default=Decimal("2.2")
-    )
-    col_json1 = JSONField(
-        default={"a": 1, "b": "b", "c": [2], "d": {"e": 3}, "f": True}
-    )
+    col_text1 = models.TextField(default="Moo,Foo,Baa,Waa,Moo,Foo,Baa,Waa,Moo,Foo,Baa,Waa")
+    col_decimal1 = models.DecimalField(max_digits=12, decimal_places=8, default=Decimal("2.2"))
+    col_json1 = JSONField(default={"a": 1, "b": "b", "c": [2], "d": {"e": 3}, "f": True})
 
     col_float2 = models.FloatField(null=True)
     col_smallint2 = models.SmallIntegerField(null=True)
@@ -55,15 +49,9 @@ class Journal3(models.Model):
     col_int3 = models.IntegerField(default=2000000)
     col_bigint3 = models.BigIntegerField(default=99999999)
     col_char3 = models.CharField(max_length=255, default="value1")
-    col_text3 = models.TextField(
-        default="Moo,Foo,Baa,Waa,Moo,Foo,Baa,Waa,Moo,Foo,Baa,Waa"
-    )
-    col_decimal3 = models.DecimalField(
-        max_digits=12, decimal_places=8, default=Decimal("2.2")
-    )
-    col_json3 = JSONField(
-        default={"a": 1, "b": "b", "c": [2], "d": {"e": 3}, "f": True}
-    )
+    col_text3 = models.TextField(default="Moo,Foo,Baa,Waa,Moo,Foo,Baa,Waa,Moo,Foo,Baa,Waa")
+    col_decimal3 = models.DecimalField(max_digits=12, decimal_places=8, default=Decimal("2.2"))
+    col_json3 = JSONField(default={"a": 1, "b": "b", "c": [2], "d": {"e": 3}, "f": True})
 
     col_float4 = models.FloatField(null=True)
     col_smallint4 = models.SmallIntegerField(null=True)

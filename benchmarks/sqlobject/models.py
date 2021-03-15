@@ -5,17 +5,17 @@ from decimal import Decimal
 from sqlobject import (
     DatabaseIndex,
     DateTimeCol,
+    DecimalCol,
+    FloatCol,
+    ForeignKey,
     IntCol,
+    JSONCol,
+    MultipleJoin,
+    RelatedJoin,
     SQLObject,
+    UnicodeCol,
     connectionForURI,
     sqlhub,
-    ForeignKey,
-    RelatedJoin,
-    MultipleJoin,
-    FloatCol,
-    UnicodeCol,
-    DecimalCol,
-    JSONCol,
 )
 
 dbtype = os.environ.get("DBTYPE", "")
@@ -24,7 +24,9 @@ if dbtype == "postgres":
         f"postgres://postgres@{os.environ.get('PASSWORD')}localhost/tbench"
     )
 elif dbtype == "mysql":
-    conn = sqlhub.processConnection = connectionForURI(f"mysql://root:{os.environ.get('PASSWORD')}@localhost/tbench")
+    conn = sqlhub.processConnection = connectionForURI(
+        f"mysql://root:{os.environ.get('PASSWORD')}@localhost/tbench"
+    )
 else:
     conn = sqlhub.processConnection = connectionForURI("sqlite:/dev/shm/db.sqlite3")
 
@@ -50,9 +52,7 @@ if test == 2:
 
         parent = ForeignKey("Journal", default=None)
         children = MultipleJoin("Journal")
-        related = RelatedJoin(
-            "Journal", joinColumn="journal_id", otherColumn="journal_from_id"
-        )
+        related = RelatedJoin("Journal", joinColumn="journal_id", otherColumn="journal_from_id")
         related_from = RelatedJoin(
             "Journal",
             joinColumn="journal_from_id",
@@ -78,9 +78,7 @@ if test == 3:
         col_text1 = UnicodeCol(
             default="Moo,Foo,Baa,Waa,Moo,Foo,Baa,Waa,Moo,Foo,Baa,Waa", notNone=True
         )
-        col_decimal1 = DecimalCol(
-            size=12, precision=8, default=Decimal("2.2"), notNone=True
-        )
+        col_decimal1 = DecimalCol(size=12, precision=8, default=Decimal("2.2"), notNone=True)
         col_json1 = JSONCol(
             default={"a": 1, "b": "b", "c": [2], "d": {"e": 3}, "f": True}, notNone=True
         )

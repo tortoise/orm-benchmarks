@@ -12,9 +12,7 @@ count = 0
 with db_session():
     for _ in range(10):
         for level in LEVEL_CHOICE:
-            res = [
-                obj.to_dict() for obj in select(j for j in Journal if j.level == level)
-            ]
+            res = [obj.to_dict() for obj in select(j for j in Journal if j.level == level)]
             count += len(res)
 
 now = time.time()

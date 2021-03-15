@@ -1,36 +1,33 @@
-import os
 import json
+import os
 from datetime import datetime
 from decimal import Decimal
 
 from peewee import (
+    BigIntegerField,
     CharField,
     DateTimeField,
-    Model,
-    SmallIntegerField,
-    ForeignKeyField,
-    FloatField,
-    IntegerField,
-    BigIntegerField,
-    TextField,
     DecimalField,
+    FloatField,
+    ForeignKeyField,
+    IntegerField,
+    Model,
     MySQLDatabase,
+    SmallIntegerField,
+    TextField,
 )
-from playhouse.sqlite_ext import SqliteExtDatabase
 from playhouse.postgres_ext import PostgresqlExtDatabase
-
+from playhouse.sqlite_ext import SqliteExtDatabase
 
 dbtype = os.environ.get("DBTYPE", "")
 if dbtype == "postgres":
-    db = PostgresqlExtDatabase("tbench", user="postgres",password=os.environ.get('PASSWORD'))
+    db = PostgresqlExtDatabase("tbench", user="postgres", password=os.environ.get("PASSWORD"))
 elif dbtype == "mysql":
-    db = MySQLDatabase("tbench", user="root",password=os.environ.get('PASSWORD'))
+    db = MySQLDatabase("tbench", user="root", password=os.environ.get("PASSWORD"))
 else:
     db = SqliteExtDatabase(
         "/dev/shm/db.sqlite3",
-        pragmas=(
-            ("journal_mode", "wal"),  # Use WAL-mode (you should always use this!).
-        ),
+        pragmas=(("journal_mode", "wal"),),  # Use WAL-mode (you should always use this!).
     )
 
 
@@ -85,9 +82,7 @@ if test == 3:
         col_char1 = CharField(max_length=255, default="value1")
         col_text1 = TextField(default="Moo,Foo,Baa,Waa,Moo,Foo,Baa,Waa,Moo,Foo,Baa,Waa")
         col_decimal1 = DecimalField(12, 8, default=Decimal("2.2"))
-        col_json1 = JSONField(
-            default={"a": 1, "b": "b", "c": [2], "d": {"e": 3}, "f": True}
-        )
+        col_json1 = JSONField(default={"a": 1, "b": "b", "c": [2], "d": {"e": 3}, "f": True})
 
         col_float2 = FloatField(null=True)
         col_smallint2 = SmallIntegerField(null=True)
@@ -105,9 +100,7 @@ if test == 3:
         col_char3 = CharField(max_length=255, default="value1")
         col_text3 = TextField(default="Moo,Foo,Baa,Waa,Moo,Foo,Baa,Waa,Moo,Foo,Baa,Waa")
         col_decimal3 = DecimalField(12, 8, default=Decimal("2.2"))
-        col_json3 = JSONField(
-            default={"a": 1, "b": "b", "c": [2], "d": {"e": 3}, "f": True}
-        )
+        col_json3 = JSONField(default={"a": 1, "b": "b", "c": [2], "d": {"e": 3}, "f": True})
 
         col_float4 = FloatField(null=True)
         col_smallint4 = SmallIntegerField(null=True)

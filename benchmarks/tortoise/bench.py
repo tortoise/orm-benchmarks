@@ -11,6 +11,7 @@ try:
         loopstr = ""
     if os.environ.get("UVLOOP", ""):
         import asyncio
+
         import uvloop
 
         asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
@@ -40,7 +41,6 @@ import test_h
 import test_i
 import test_j
 import test_k
-
 from tortoise import Tortoise, run_async
 
 

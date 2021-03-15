@@ -1,5 +1,4 @@
 from models import init
-
 from tortoise import Tortoise, run_async
 
 

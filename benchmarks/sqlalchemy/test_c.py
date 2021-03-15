@@ -13,10 +13,7 @@ Session = sessionmaker(bind=engine)
 start = now = time.time()
 session = Session()
 session.bulk_save_objects(
-    [
-        Journal(level=choice(LEVEL_CHOICE), text=f"Insert from C, item {i}")
-        for i in range(count)
-    ]
+    [Journal(level=choice(LEVEL_CHOICE), text=f"Insert from C, item {i}") for i in range(count)]
 )
 session.commit()
 now = time.time()

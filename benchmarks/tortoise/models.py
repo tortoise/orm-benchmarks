@@ -19,9 +19,7 @@ if test == 2:
         timestamp = fields.DatetimeField(auto_now_add=True)
         level = fields.SmallIntField(index=True)
         text = fields.CharField(max_length=255, index=True)
-        parent = fields.ForeignKeyField(
-            "models.Journal", related_name="children", null=True
-        )
+        parent = fields.ForeignKeyField("models.Journal", related_name="children", null=True)
         related = fields.ManyToManyField("models.Journal", related_name="related_from")
 
 
@@ -37,13 +35,9 @@ if test == 3:
         col_int1 = fields.IntField(default=2000000)
         col_bigint1 = fields.BigIntField(default=99999999)
         col_char1 = fields.CharField(max_length=255, default="value1")
-        col_text1 = fields.TextField(
-            default="Moo,Foo,Baa,Waa,Moo,Foo,Baa,Waa,Moo,Foo,Baa,Waa"
-        )
+        col_text1 = fields.TextField(default="Moo,Foo,Baa,Waa,Moo,Foo,Baa,Waa,Moo,Foo,Baa,Waa")
         col_decimal1 = fields.DecimalField(12, 8, default=Decimal("2.2"))
-        col_json1 = fields.JSONField(
-            default={"a": 1, "b": "b", "c": [2], "d": {"e": 3}, "f": True}
-        )
+        col_json1 = fields.JSONField(default={"a": 1, "b": "b", "c": [2], "d": {"e": 3}, "f": True})
 
         col_float2 = fields.FloatField(null=True)
         col_smallint2 = fields.SmallIntField(null=True)
@@ -59,13 +53,9 @@ if test == 3:
         col_int3 = fields.IntField(default=2000000)
         col_bigint3 = fields.BigIntField(default=99999999)
         col_char3 = fields.CharField(max_length=255, default="value1")
-        col_text3 = fields.TextField(
-            default="Moo,Foo,Baa,Waa,Moo,Foo,Baa,Waa,Moo,Foo,Baa,Waa"
-        )
+        col_text3 = fields.TextField(default="Moo,Foo,Baa,Waa,Moo,Foo,Baa,Waa,Moo,Foo,Baa,Waa")
         col_decimal3 = fields.DecimalField(12, 8, default=Decimal("2.2"))
-        col_json3 = fields.JSONField(
-            default={"a": 1, "b": "b", "c": [2], "d": {"e": 3}, "f": True}
-        )
+        col_json3 = fields.JSONField(default={"a": 1, "b": "b", "c": [2], "d": {"e": 3}, "f": True})
 
         col_float4 = fields.FloatField(null=True)
         col_smallint4 = fields.SmallIntField(null=True)

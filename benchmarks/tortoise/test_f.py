@@ -1,7 +1,7 @@
+import asyncio
 import os
 import time
 from random import randint
-import asyncio
 
 from models import Journal
 

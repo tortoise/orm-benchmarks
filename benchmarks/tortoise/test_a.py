@@ -1,7 +1,8 @@
+import asyncio
 import os
 import time
 from random import choice
-import asyncio
+
 from models import Journal
 
 LEVEL_CHOICE = [10, 20, 30, 40, 50]
@@ -12,9 +13,7 @@ count = int(count // concurrents) * concurrents
 
 async def _runtest(count):
     for i in range(count):
-        await Journal.create(
-            level=choice(LEVEL_CHOICE), text=f"Insert from A, item {i}"
-        )
+        await Journal.create(level=choice(LEVEL_CHOICE), text=f"Insert from A, item {i}")
 
 
 async def runtest(loopstr):

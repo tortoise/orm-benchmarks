@@ -1,7 +1,8 @@
-import time
-import os
-from models import Journal
 import asyncio
+import os
+import time
+
+from models import Journal
 
 LEVEL_CHOICE = [10, 20, 30, 40, 50]
 concurrents = int(os.environ.get("CONCURRENTS", "10"))

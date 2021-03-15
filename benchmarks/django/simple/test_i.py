@@ -8,8 +8,8 @@ finally:
 import time
 from random import choice
 
-from simple.models import Journal
 from django.db import transaction
+from simple.models import Journal
 
 LEVEL_CHOICE = [10, 20, 30, 40, 50]
 

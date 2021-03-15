@@ -1,7 +1,7 @@
+import asyncio
 import os
 import time
 from random import choice
-import asyncio
 
 from models import Journal
 
@@ -13,10 +13,7 @@ count = int(count // concurrents) * concurrents
 
 async def _runtest(count):
     await Journal.bulk_create(
-        [
-            Journal(level=choice(LEVEL_CHOICE), text=f"Insert from C, item {i}")
-            for i in range(count)
-        ]
+        [Journal(level=choice(LEVEL_CHOICE), text=f"Insert from C, item {i}") for i in range(count)]
     )
 
 

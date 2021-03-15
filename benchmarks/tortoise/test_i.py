@@ -1,8 +1,9 @@
-import time
-import os
-from models import Journal
 import asyncio
+import os
+import time
 from random import choice
+
+from models import Journal
 from tortoise.transactions import in_transaction
 
 LEVEL_CHOICE = [10, 20, 30, 40, 50]
@@ -29,10 +30,7 @@ async def runtest(loopstr):
 
     count = sum(
         await asyncio.gather(
-            *[
-                _runtest(objs[i * inrange : ((i + 1) * inrange) - 1])
-                for i in range(concurrents)
-            ]
+            *[_runtest(objs[i * inrange : ((i + 1) * inrange) - 1]) for i in range(concurrents)]
         )
     )
 

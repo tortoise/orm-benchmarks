@@ -10,9 +10,7 @@ count = int(os.environ.get("ITERATIONS", "1000"))
 start = now = time.time()
 trans = conn.transaction()
 for i in range(count):
-    Journal(
-        level=choice(LEVEL_CHOICE), text=f"Insert from B, item {i}", connection=trans
-    )
+    Journal(level=choice(LEVEL_CHOICE), text=f"Insert from B, item {i}", connection=trans)
 trans.commit(close=True)
 now = time.time()
 

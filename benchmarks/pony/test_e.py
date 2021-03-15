@@ -16,9 +16,7 @@ with db_session():
     for _ in range(iters // 10):
         for level in LEVEL_CHOICE:
             res = list(
-                select(j for j in Journal if j.level == level).limit(
-                    20, randrange(iters - 20)
-                )
+                select(j for j in Journal if j.level == level).limit(20, randrange(iters - 20))
             )
             count += len(res)
 

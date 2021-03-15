@@ -1,10 +1,9 @@
+import asyncio
 import os
 import time
 from random import choice
-import asyncio
 
 from models import Journal
-
 from tortoise.transactions import in_transaction
 
 LEVEL_CHOICE = [10, 20, 30, 40, 50]
@@ -16,9 +15,7 @@ count = int(count // concurrents) * concurrents
 async def _runtest(count):
     async with in_transaction():
         for i in range(count):
-            await Journal.create(
-                level=choice(LEVEL_CHOICE), text=f"Insert from B, item {i}"
-            )
+            await Journal.create(level=choice(LEVEL_CHOICE), text=f"Insert from B, item {i}")
 
 
 async def runtest(loopstr):

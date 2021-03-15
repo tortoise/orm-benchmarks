@@ -3,18 +3,18 @@ from datetime import datetime
 from decimal import Decimal
 
 from sqlalchemy import (
+    JSON,
+    BigInteger,
     Column,
     DateTime,
+    Float,
+    ForeignKey,
     Integer,
+    Numeric,
     SmallInteger,
     String,
-    create_engine,
-    ForeignKey,
-    BigInteger,
-    Float,
-    Numeric,
     Text,
-    JSON,
+    create_engine,
 )
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship

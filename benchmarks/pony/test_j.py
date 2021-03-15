@@ -2,7 +2,7 @@ import time
 from random import choice
 
 from models import Journal
-from pony.orm import db_session, select, commit
+from pony.orm import commit, db_session, select
 
 LEVEL_CHOICE = [10, 20, 30, 40, 50]
 

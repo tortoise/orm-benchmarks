@@ -24,7 +24,7 @@ if dbtype == "postgres":
             "USER": "postgres",
             "HOST": "127.0.0.1",
             "PORT": "5432",
-            "PASSWORD": os.environ.get('PASSWORD')
+            "PASSWORD": os.environ.get("PASSWORD"),
         }
     }
 elif dbtype == "mysql":
@@ -35,7 +35,7 @@ elif dbtype == "mysql":
             "USER": "root",
             "HOST": "127.0.0.1",
             "PORT": "3306",
-            "PASSWORD": os.environ.get('PASSWORD')
+            "PASSWORD": os.environ.get("PASSWORD"),
         }
     }
 else:
