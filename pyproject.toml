@@ -17,6 +17,7 @@ tortoise-orm = "*"
 # DB drivers
 asyncpg = "*"
 aiomysql = "*"
+aiosqlite = "*"
 mysqlclient = "*"
 psycopg2 = "*"
 # Recommended accelerators
