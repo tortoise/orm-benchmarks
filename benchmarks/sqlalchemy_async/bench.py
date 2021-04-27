@@ -5,14 +5,13 @@ import test_a
 import test_b
 import test_c
 import test_d
-
-# import test_e
-# import test_f
-# import test_g
-# import test_h
-# import test_i
-# import test_j
-# import test_k
+import test_e
+import test_f
+import test_g
+import test_h
+import test_i
+import test_j
+import test_k
 from models import Base, engine, loopstr
 
 
@@ -27,13 +26,13 @@ async def run_benchmarks():
     await test_b.runtest(loopstr)
     await test_c.runtest(loopstr)
     await test_d.runtest(loopstr)
-    # await test_e.runtest(loopstr)
-    # await test_f.runtest(loopstr)
-    # await test_g.runtest(loopstr)
-    # await test_h.runtest(loopstr)
-    # await test_i.runtest(loopstr)
-    # await test_j.runtest(loopstr)
-    # await test_k.runtest(loopstr)
+    await test_e.runtest(loopstr)
+    await test_f.runtest(loopstr)
+    await test_g.runtest(loopstr)
+    await test_h.runtest(loopstr)
+    await test_i.runtest(loopstr)
+    await test_j.runtest(loopstr)
+    await test_k.runtest(loopstr)
 
 
 if __name__ == "__main__":

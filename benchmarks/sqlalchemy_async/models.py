@@ -3,19 +3,8 @@ import sys
 from datetime import datetime
 from decimal import Decimal
 
-from sqlalchemy import (
-    JSON,
-    BigInteger,
-    Column,
-    DateTime,
-    Float,
-    ForeignKey,
-    Integer,
-    Numeric,
-    SmallInteger,
-    String,
-    Text,
-)
+from sqlalchemy import (JSON, BigInteger, Column, DateTime, Float, ForeignKey, Integer, Numeric,
+                        SmallInteger, String, Text)
 from sqlalchemy.ext.asyncio import create_async_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
@@ -42,11 +31,11 @@ if concurrents > 1 and sys.version_info < (3, 7):
 dbtype = os.environ.get("DBTYPE", "")
 if dbtype == "postgres":
     engine = create_async_engine(
-        f"postgres://postgres:{os.environ.get('PASSWORD')}@127.0.0.1:5432/tbench?minsize={concurrents}&maxsize={concurrents}"
+        f"postgres+asyncpg://postgres:{os.environ.get('PASSWORD')}@127.0.0.1:5432/tbench?minsize={concurrents}&maxsize={concurrents}"
     )
 elif dbtype == "mysql":
     engine = create_async_engine(
-        f"mysql://root:{os.environ.get('PASSWORD')}@127.0.0.1:3306/tbench?minsize={concurrents}&maxsize={concurrents}"
+        f"mysql+aiomysql://root:{os.environ.get('PASSWORD')}@127.0.0.1:3306/tbench?minsize={concurrents}&maxsize={concurrents}"
     )
 else:
     engine = create_async_engine(
