@@ -16,7 +16,7 @@ async def _runtest(inrange) -> int:
     async with AsyncSession(engine) as session:
         for _ in range(inrange):
             for level in LEVEL_CHOICE:
-                res = list(
+                res = (
                     (
                         await session.execute(
                             select(*Journal.__table__._columns)

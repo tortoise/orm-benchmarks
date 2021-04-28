@@ -24,7 +24,7 @@ async def _runtest(objs) -> int:
 
 async def runtest(loopstr):
     async with AsyncSession(engine) as session:
-        objs = list((await session.execute(select(Journal))).scalars().all())
+        objs = (await session.execute(select(Journal))).scalars().all()
     inrange = len(objs) // concurrents
     if inrange < 1:
         inrange = 1

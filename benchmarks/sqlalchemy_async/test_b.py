@@ -18,7 +18,7 @@ async def _runtest(count):
             session.add(
                 Journal(level=choice(LEVEL_CHOICE), text=f"Insert from B, item {i}")
             )
-            await session.commit()
+        await session.commit()
 
 
 async def runtest(loopstr):

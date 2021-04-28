@@ -17,10 +17,15 @@ async def _runtest(inrange):
     async with AsyncSession(engine) as session:
         for _ in range(inrange):
             for level in LEVEL_CHOICE:
-                result = await session.execute(
-                    select(Journal).where(Journal.level == level)
+                res = (
+                    (
+                        await session.execute(
+                            select(Journal).where(Journal.level == level)
+                        )
+                    )
+                    .scalars()
+                    .all()
                 )
-                res = list(result.scalars().all())
                 count += len(res)
     return count
 
