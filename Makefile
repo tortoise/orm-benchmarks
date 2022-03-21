@@ -9,7 +9,7 @@ deps:
 	@poetry install
 
 style: deps
-	isort -src $(checkfiles)
+	isort $(checkfiles)
 	black $(black_opts) $(checkfiles)
 
 check: deps

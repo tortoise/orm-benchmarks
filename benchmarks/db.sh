@@ -10,5 +10,5 @@ then
     echo 'DROP DATABASE tbench' | mysql -u root -p$PASSWORD
     echo 'CREATE DATABASE tbench' | mysql -u root -p$PASSWORD
 else
-    rm -f /dev/shm/db.sqlite3
+    rm -f /tmp/db.sqlite3
 fi

@@ -3,12 +3,10 @@
 from decimal import Decimal
 
 import django.db.models.deletion
-import jsonfield.fields
 from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = []
@@ -61,7 +59,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "col_json1",
-                    jsonfield.fields.JSONField(
+                    models.JSONField(
                         default={"a": 1, "b": "b", "c": [2], "d": {"e": 3}, "f": True}
                     ),
                 ),
@@ -75,7 +73,7 @@ class Migration(migrations.Migration):
                     "col_decimal2",
                     models.DecimalField(decimal_places=8, max_digits=12, null=True),
                 ),
-                ("col_json2", jsonfield.fields.JSONField(null=True)),
+                ("col_json2", models.JSONField(null=True)),
                 ("col_float3", models.FloatField(default=2.2)),
                 ("col_smallint3", models.SmallIntegerField(default=2)),
                 ("col_int3", models.IntegerField(default=2000000)),
@@ -91,7 +89,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "col_json3",
-                    jsonfield.fields.JSONField(
+                    models.JSONField(
                         default={"a": 1, "b": "b", "c": [2], "d": {"e": 3}, "f": True}
                     ),
                 ),
@@ -105,7 +103,7 @@ class Migration(migrations.Migration):
                     "col_decimal4",
                     models.DecimalField(decimal_places=8, max_digits=12, null=True),
                 ),
-                ("col_json4", jsonfield.fields.JSONField(null=True)),
+                ("col_json4", models.JSONField(null=True)),
             ],
         ),
         migrations.CreateModel(

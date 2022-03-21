@@ -2,7 +2,6 @@ import os
 from decimal import Decimal
 
 from django.db import models
-from jsonfield import JSONField
 
 
 class Journal1(models.Model):
@@ -33,7 +32,7 @@ class Journal3(models.Model):
     col_char1 = models.CharField(max_length=255, default="value1")
     col_text1 = models.TextField(default="Moo,Foo,Baa,Waa,Moo,Foo,Baa,Waa,Moo,Foo,Baa,Waa")
     col_decimal1 = models.DecimalField(max_digits=12, decimal_places=8, default=Decimal("2.2"))
-    col_json1 = JSONField(default={"a": 1, "b": "b", "c": [2], "d": {"e": 3}, "f": True})
+    col_json1 = models.JSONField(default={"a": 1, "b": "b", "c": [2], "d": {"e": 3}, "f": True})
 
     col_float2 = models.FloatField(null=True)
     col_smallint2 = models.SmallIntegerField(null=True)
@@ -42,7 +41,7 @@ class Journal3(models.Model):
     col_char2 = models.CharField(max_length=255, null=True)
     col_text2 = models.TextField(null=True)
     col_decimal2 = models.DecimalField(max_digits=12, decimal_places=8, null=True)
-    col_json2 = JSONField(null=True)
+    col_json2 = models.JSONField(null=True)
 
     col_float3 = models.FloatField(default=2.2)
     col_smallint3 = models.SmallIntegerField(default=2)
@@ -51,7 +50,7 @@ class Journal3(models.Model):
     col_char3 = models.CharField(max_length=255, default="value1")
     col_text3 = models.TextField(default="Moo,Foo,Baa,Waa,Moo,Foo,Baa,Waa,Moo,Foo,Baa,Waa")
     col_decimal3 = models.DecimalField(max_digits=12, decimal_places=8, default=Decimal("2.2"))
-    col_json3 = JSONField(default={"a": 1, "b": "b", "c": [2], "d": {"e": 3}, "f": True})
+    col_json3 = models.JSONField(default={"a": 1, "b": "b", "c": [2], "d": {"e": 3}, "f": True})
 
     col_float4 = models.FloatField(null=True)
     col_smallint4 = models.SmallIntegerField(null=True)
@@ -60,7 +59,7 @@ class Journal3(models.Model):
     col_char4 = models.CharField(max_length=255, null=True)
     col_text4 = models.TextField(null=True)
     col_decimal4 = models.DecimalField(max_digits=12, decimal_places=8, null=True)
-    col_json4 = JSONField(null=True)
+    col_json4 = models.JSONField(null=True)
 
 
 test = int(os.environ.get("TEST", "1"))

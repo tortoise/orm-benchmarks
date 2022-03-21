@@ -90,6 +90,6 @@ elif dbtype == "mysql":
         db="tbench",
     )
 else:
-    db.bind(provider="sqlite", filename="/dev/shm/db.sqlite3", create_db=True)
+    db.bind(provider="sqlite", filename="/tmp/db.sqlite3", create_db=True)
 
 db.generate_mapping(create_tables=True)

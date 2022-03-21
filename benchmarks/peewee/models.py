@@ -26,7 +26,7 @@ elif dbtype == "mysql":
     db = MySQLDatabase("tbench", user="root", password=os.environ.get("PASSWORD"))
 else:
     db = SqliteExtDatabase(
-        "/dev/shm/db.sqlite3",
+        "/tmp/db.sqlite3",
         pragmas=(("journal_mode", "wal"),),  # Use WAL-mode (you should always use this!).
     )
 

@@ -25,7 +25,7 @@ if dbtype == "postgres":
 elif dbtype == "mysql":
     engine = create_engine(f"mysql://root:{os.environ.get('PASSWORD')}@localhost/tbench")
 else:
-    engine = create_engine("sqlite:////dev/shm/db.sqlite3")
+    engine = create_engine("sqlite:////tmp/db.sqlite3")
 
 Base = declarative_base()
 

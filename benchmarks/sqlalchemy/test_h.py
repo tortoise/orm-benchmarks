@@ -19,7 +19,7 @@ for _ in range(10):
         res = list(
             session.query(Journal)
             .filter(Journal.level == level)
-            .values(*Journal.__table__._columns)
+            .with_entities(*Journal.__table__._columns)
         )
         count += len(res)
 

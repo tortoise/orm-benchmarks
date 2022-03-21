@@ -42,7 +42,7 @@ else:
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
-            "NAME": "/dev/shm/db.sqlite3",
+            "NAME": "/tmp/db.sqlite3",
         }
     }
 

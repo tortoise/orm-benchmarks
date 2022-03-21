@@ -27,7 +27,7 @@ if dbtype == "postgres":
 elif dbtype == "mysql":
     db_url = f"mysql://root:{os.environ.get('PASSWORD')}@127.0.0.1:3306/tbench?minsize={concurrents}&maxsize={concurrents}"
 else:
-    db_url = "sqlite:///dev/shm/db.sqlite3"
+    db_url = "sqlite:///tmp/db.sqlite3"
 
 
 import test_a
