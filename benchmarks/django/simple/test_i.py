@@ -12,7 +12,7 @@ from simple.models import Journal
 
 LEVEL_CHOICE = [10, 20, 30, 40, 50]
 
-objs = Journal.objects.all()
+objs = list(Journal.objects.all())
 count = len(objs)
 
 start = time.time()
