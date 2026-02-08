@@ -23,7 +23,7 @@ if dbtype == "postgres":
             "NAME": "tbench",
             "USER": "postgres",
             "HOST": "127.0.0.1",
-            "PORT": "5432",
+            "PORT": os.environ.get("PGPORT", "5432"),
             "PASSWORD": os.environ.get("PASSWORD"),
         }
     }
@@ -34,7 +34,7 @@ elif dbtype == "mysql":
             "NAME": "tbench",
             "USER": "root",
             "HOST": "127.0.0.1",
-            "PORT": "3306",
+            "PORT": os.environ.get("MYPORT", "3306"),
             "PASSWORD": os.environ.get("PASSWORD"),
         }
     }

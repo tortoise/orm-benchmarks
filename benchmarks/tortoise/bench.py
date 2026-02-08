@@ -23,9 +23,9 @@ if concurrents > 1 and sys.version_info < (3, 7):
 
 dbtype = os.environ.get("DBTYPE", "")
 if dbtype == "postgres":
-    db_url = f"postgres://postgres:{os.environ.get('PASSWORD')}@127.0.0.1:5432/tbench?minsize={concurrents}&maxsize={concurrents}"
+    db_url = f"postgres://postgres:{os.environ.get('PASSWORD')}@127.0.0.1:{os.environ.get('PGPORT', '5432')}/tbench?minsize={concurrents}&maxsize={concurrents}"
 elif dbtype == "mysql":
-    db_url = f"mysql://root:{os.environ.get('PASSWORD')}@127.0.0.1:3306/tbench?minsize={concurrents}&maxsize={concurrents}"
+    db_url = f"mysql://root:{os.environ.get('PASSWORD')}@127.0.0.1:{os.environ.get('MYPORT', '3306')}/tbench?minsize={concurrents}&maxsize={concurrents}"
 else:
     db_url = "sqlite:///tmp/db.sqlite3"
 

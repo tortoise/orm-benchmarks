@@ -12,7 +12,11 @@ sqlalchemy = "*"
 peewee = "*"
 pony = "*"
 sqlobject = "*"
-tortoise-orm = "*"
+tortoise-orm = {path = "/Users/abondar/PycharmProjects/tortoise-orm", develop = true}
+piccolo = "*"
+ormar = "*"
+databases = {extras = ["aiosqlite"], version = "*"}
+aiosqlite = "*"
 # DB drivers
 asyncpg = "*"
 asyncmy = "*"
