@@ -3,19 +3,18 @@ from datetime import datetime
 from decimal import Decimal
 from typing import ForwardRef, Optional
 
-import databases
 import ormar
 import sqlalchemy
 
 dbtype = os.environ.get("DBTYPE", "")
 if dbtype == "postgres":
-    DATABASE_URL = f"postgresql://postgres:{os.environ.get('PASSWORD')}@localhost:{os.environ.get('PGPORT', '5432')}/tbench"
+    DATABASE_URL = f"postgresql+asyncpg://postgres:{os.environ.get('PASSWORD')}@localhost:{os.environ.get('PGPORT', '5432')}/tbench"
 elif dbtype == "mysql":
-    DATABASE_URL = f"mysql://root:{os.environ.get('PASSWORD')}@127.0.0.1:{os.environ.get('MYPORT', '3306')}/tbench"
+    DATABASE_URL = f"mysql+aiomysql://root:{os.environ.get('PASSWORD')}@127.0.0.1:{os.environ.get('MYPORT', '3306')}/tbench"
 else:
-    DATABASE_URL = "sqlite:////tmp/db.sqlite3"
+    DATABASE_URL = "sqlite+aiosqlite:////tmp/db.sqlite3"
 
-database = databases.Database(DATABASE_URL)
+database = ormar.DatabaseConnection(DATABASE_URL)
 metadata = sqlalchemy.MetaData()
 
 base_ormar_config = ormar.OrmarConfig(
@@ -115,6 +114,6 @@ if test == 3:
 
 
 def create_tables():
-    engine = sqlalchemy.create_engine(str(database.url))
+    engine = sqlalchemy.create_engine(DATABASE_URL.replace("+asyncpg", "").replace("+aiomysql", "+pymysql").replace("+aiosqlite", ""))
     metadata.create_all(engine)
     engine.dispose()

@@ -1,12 +1,10 @@
 checkfiles = benchmarks/
 black_opts = -l 100 -t py38
 PASSWORD ?= "123456"
-
-up:
-	@poetry update
+PGPORT ?= 5433
 
 deps:
-	@poetry install
+	@uv pip install -e .
 
 style: deps
 	isort $(checkfiles)
@@ -18,7 +16,7 @@ check: deps
 	bandit -r $(checkfiles)
 
 benchmark_all: deps
-	cd benchmarks && PASSWORD=$(PASSWORD) sh bench_all.sh
+	cd benchmarks && PASSWORD=$(PASSWORD) PGPORT=$(PGPORT) sh bench_all.sh
 
 benchmark_sqlite: deps
 	cd benchmarks && PASSWORD=$(PASSWORD) DBTYPE=sqlite sh bench.sh
@@ -27,4 +25,4 @@ benchmark_mysql: deps
 	cd benchmarks && PASSWORD=$(PASSWORD) DBTYPE=mysql sh bench.sh
 
 benchmark_postgres: deps
-	cd benchmarks && PASSWORD=$(PASSWORD) DBTYPE=postgres sh bench.sh
+	cd benchmarks && PASSWORD=$(PASSWORD) PGPORT=$(PGPORT) DBTYPE=postgres sh bench.sh

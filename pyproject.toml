@@ -1,41 +1,37 @@
-[tool.poetry]
+[project]
 name = "orm-benchmarks"
 version = "0.1.0"
 description = "Benchmarks for ORMs"
-authors = ["long2ice <long2ice@gmail.com>"]
+requires-python = ">=3.10"
 
-[tool.poetry.dependencies]
-python = "^3.8"
-# ORM's
-django = "*"
-sqlalchemy = "*"
-peewee = "*"
-pony = "*"
-sqlobject = "*"
-tortoise-orm = {path = "/Users/abondar/PycharmProjects/tortoise-orm", develop = true}
-piccolo = "*"
-ormar = "*"
-databases = {extras = ["aiosqlite"], version = "*"}
-aiosqlite = "*"
-# DB drivers
-asyncpg = "*"
-asyncmy = "*"
-mysqlclient = "*"
-psycopg2 = "*"
-# Recommended accelerators
-uvloop = "*"
-python-rapidjson = "*"
+dependencies = [
+    # ORM's
+    "django",
+    "sqlalchemy",
+    "peewee",
+    "sqlobject",
+    "tortoise-orm",
+    "piccolo",
+    "ormar",
+    "sqlmodel",
+    "databases[aiosqlite]",
+    "aiosqlite",
+    # DB drivers
+    "asyncpg",
+    "asyncmy",
+    "psycopg2-binary",
+    # Recommended accelerators
+    "uvloop",
+    "python-rapidjson",
+    "greenlet",
+    # Charts
+    "matplotlib",
+    "numpy",
+]
 
-[tool.poetry.dev-dependencies]
-# Testing tools
-vmprof = "*"
-py-spy = "*"
-tox = "*"
-flake8 = "*"
-isort = "*"
-black = "*"
-bandit = "*"
+[tool.uv.sources]
+tortoise-orm = { path = "/Users/abondar/PycharmProjects/tortoise-orm", editable = true }
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
